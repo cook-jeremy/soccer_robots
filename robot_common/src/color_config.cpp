@@ -2,13 +2,13 @@
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/opencv.hpp>
+//#include "opencv2/core/version.hpp"
 #include <config.h>
 #include <string>
 #include <tf/tf.h>
-#include <move_base_msgs/MoveBaseAction.h>
 #include <actionlib/client/simple_action_client.h>
 #include <tf/transform_listener.h>
 #include <actionlib/server/simple_action_server.h>
@@ -40,7 +40,7 @@ public:
         image_sub_ = it_.subscribe("/usb_cam/image_raw", 1, &ImageConverter::imageCb, this);
         //image_pub_ = it_.advertise("/image_converter/output_video", 1);
 
-        
+
         //cv::namedWindow(OPENCV_WINDOW);
         cv::namedWindow("Control", CV_WINDOW_AUTOSIZE); //create a window called "Control"
 
@@ -53,11 +53,13 @@ public:
 
         cvCreateTrackbar("LowV", "Control", &iLowV, 255); //Value (0 - 255)
         cvCreateTrackbar("HighV", "Control", &iHighV, 255);
-        
+
     }
 
     ~ImageConverter() {
-        cv::destroyWindow(OPENCV_WINDOW);
+        cv::destroyWindow("Control");
+        cv::destroyWindow("Original");
+        cv::destroyWindow("Auto-Thresholded Image");
     }
 
     void imageCb(const sensor_msgs::ImageConstPtr &msg) {
@@ -79,28 +81,18 @@ public:
 
         cvtColor(original_image, imgHSV, cv::COLOR_BGR2HSV); // Conver to HSV
 
-        cv::Mat imgThresholded;
-        //cv::Mat autoThresh;
-        //cv::Mat autoThreshContour;
+        //cv::Mat imgThresholded;
+        cv::Mat autoThreshContour;
 
-        
-        //inRange(imgHSV, cv::Scalar(iLowH, iLowS, iLowV), cv::Scalar(iHighH, iHighS, iHighV), imgThresholded); //Threshold the image
-        inRange(imgHSV, cv::Scalar(MIN_HUE, MIN_SAT, MIN_VAL), cv::Scalar(MAX_HUE, MAX_SAT, MAX_VAL), imgThresholded);
-        cv::erode(imgThresholded, imgThresholded, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3)) );
-        cv::dilate( imgThresholded, imgThresholded, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(4, 4)) );
-        cv::dilate( imgThresholded, imgThresholded, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(4, 4)) );
-        cv::erode(imgThresholded, imgThresholded, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3)) );
-        
-        /**
-        inRange(imgHSV, cv::Scalar(MIN_HUE, MIN_SAT, MIN_VAL), cv::Scalar(MAX_HUE, MAX_SAT, MAX_VAL), autoThreshContour);
+        inRange(imgHSV, cv::Scalar(iLowH, iLowS, iLowV), cv::Scalar(iHighH, iHighS, iHighV), autoThreshContour); //Threshold the image
+        //inRange(imgHSV, cv::Scalar(MIN_HUE, MIN_SAT, MIN_VAL), cv::Scalar(MAX_HUE, MAX_SAT, MAX_VAL), imgThresholded);
         cv::erode(autoThreshContour, autoThreshContour, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3)) );
         cv::dilate( autoThreshContour, autoThreshContour, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(4, 4)) );
         cv::dilate( autoThreshContour, autoThreshContour, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(4, 4)) );
         cv::erode(autoThreshContour, autoThreshContour, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3)) );
-        **/
-         
-        vector<vector<Point> > contours;
-        vector<Vec4i> hierarchy;
+
+        std::vector< std::vector<Point> > contours;
+        std::vector<Vec4i> hierarchy;
 
         Mat temp = autoThreshContour.clone();
         /// Detect edges using canny
@@ -108,13 +100,13 @@ public:
         /// Find contours
         findContours( temp, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
 
-        vector<Moments> mu(contours.size());
+        std::vector<Moments> mu(contours.size());
         for (int i = 0; i < contours.size(); i++) {
             mu[i] = moments(contours[i], false);
         }
 
         ///  Get the mass centers:
-        vector<Point2f> mc(contours.size());
+        std::vector<Point2f> mc(contours.size());
         double maxArea = -1;
         double numMax = -1;
         double minArea = 20;
@@ -125,7 +117,7 @@ public:
 
             std::stringstream ss;
             ss << area;
-            string areaStr = ss.str();
+            std::string areaStr = ss.str();
 
             //cv::putText(original_image, areaStr, mc[i], 1, 1, CV_RGB(0, 255, 255));
 
@@ -139,10 +131,6 @@ public:
 
         if(numMax != -1) {
             circle(original_image, mc[numMax], 5, CV_RGB(255, 255, 0), -1, 8, 0);
-
-            double width = original_image.cols;
-            offset = mc[numMax].x - (width/2);
-            std::cout << "Offset: " << offset << std::endl;
             //Point2f middle = Point2f(original_image.cols / 2, original_image.rows / 2);
             //circle(original_image, middle, 5, CV_RGB(255, 255, 0), -1, 8, 0);
             //Point2f middle2 = Point2f(mc[numMax].x, original_image.rows / 2);
@@ -152,9 +140,9 @@ public:
         //cv::imshow("Auto-Thresholded Image", autoThresh);
         cv::imshow("Auto-Thresholded Image", autoThreshContour);
         //cv::imshow("Thresholded Image", imgThresholded);
-        cv::imshow("Original", original_image); //show the original image
+        cv::imshow("Original", original_image); //show the original imag
 
-        //pause for 3 ms
+        //pause for 1 ms
         cv::waitKey(3);
 
         // Output modified video stream

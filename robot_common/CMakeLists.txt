@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(robot_comm)
+project(robot_common)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -144,6 +144,10 @@ target_link_libraries(teleop ${catkin_LIBRARIES} )
 add_executable(image_handler src/image_handler.cpp)
 add_dependencies(image_handler ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(image_handler ${catkin_LIBRARIES} )
+
+add_executable(color_config src/color_config.cpp)
+add_dependencies(color_config ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(color_config ${catkin_LIBRARIES} )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
