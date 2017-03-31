@@ -41,6 +41,9 @@
 #include <sstream>
 #include <std_srvs/Empty.h>
 
+int exposure = 100;
+int white_balance = 4000;
+
 namespace usb_cam {
 
     class UsbCamNode {
@@ -102,11 +105,11 @@ namespace usb_cam {
             node_.param("focus", focus_, -1); //0-255, -1 "leave alone"
             // enable/disable autoexposure
             node_.param("autoexposure", autoexposure_, false);
-            node_.param("exposure", exposure_, 200);
+            node_.param("exposure", exposure_, exposure);
             node_.param("gain", gain_, -1); //0-100?, -1 "leave alone"
             // enable/disable auto white balance temperature
             node_.param("auto_white_balance", auto_white_balance_, false);
-            node_.param("white_balance", white_balance_, 4000);
+            node_.param("white_balance", white_balance_, white_balance);
 
             // load the camera info
             node_.param("camera_frame_id", img_.header.frame_id, std::string("head_camera"));

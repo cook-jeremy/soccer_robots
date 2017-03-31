@@ -124,8 +124,8 @@ include_directories(
 )
 
 ## Declare a C++ library
-# add_library(robot_comm
-#   src/${PROJECT_NAME}/robot_comm.cpp
+# add_library(robot_common
+#   src/${PROJECT_NAME}/robot_common.cpp
 # )
 
 ## Declare a C++ executable
@@ -148,7 +148,7 @@ target_link_libraries(image_handler ${catkin_LIBRARIES} )
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(robot_comm ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(robot_common ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 # add_executable(robot_comm_node src/robot_comm_node.cpp)
@@ -177,7 +177,7 @@ target_link_libraries(image_handler ${catkin_LIBRARIES} )
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS robot_comm robot_comm_node
+# install(TARGETS robot_common robot_comm_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
