@@ -50,6 +50,14 @@ target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
 )
 
+add_executable(usb_cam_config nodes/usb_cam_config.cpp)
+target_link_libraries(usb_cam_config
+        ${PROJECT_NAME}
+        ${avcodec_LIBRARIES}
+        ${swscale_LIBRARIES}
+        ${catkin_LIBRARIES}
+        )
+
 #############
 ## Install ##
 #############

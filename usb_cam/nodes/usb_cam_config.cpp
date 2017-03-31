@@ -40,6 +40,16 @@
 #include <camera_info_manager/camera_info_manager.h>
 #include <sstream>
 #include <std_srvs/Empty.h>
+#include <cv_bridge/cv_bridge.h>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/opencv.hpp>
+#include <sensor_msgs/image_encodings.h>
+#include <opencv2/imgproc/imgproc.hpp>
+
+std::string CONTROL_WINDOW = "Control";
+
+int exposure = 100;
+int white_balance = 4000;
 
 namespace usb_cam {
 
@@ -102,11 +112,11 @@ namespace usb_cam {
             node_.param("focus", focus_, -1); //0-255, -1 "leave alone"
             // enable/disable autoexposure
             node_.param("autoexposure", autoexposure_, false);
-            node_.param("exposure", exposure_, 200);
+            node_.param("exposure", exposure_, exposure);
             node_.param("gain", gain_, -1); //0-100?, -1 "leave alone"
             // enable/disable auto white balance temperature
             node_.param("auto_white_balance", auto_white_balance_, false);
-            node_.param("white_balance", white_balance_, 4000);
+            node_.param("white_balance", white_balance_, white_balance);
 
             // load the camera info
             node_.param("camera_frame_id", img_.header.frame_id, std::string("head_camera"));
@@ -204,11 +214,24 @@ namespace usb_cam {
 
         virtual ~UsbCamNode() {
             cam_.shutdown();
+            cv::destroyWindow(CONTROL_WINDOW);
         }
 
         bool take_and_send_image() {
             // grab the image
             cam_.grab_image(&img_);
+
+            cv_bridge::CvImagePtr cv_ptr;
+            try {
+                cv_ptr = cv_bridge::toCvCopy(img_, sensor_msgs::image_encodings::BGR8);
+            }
+            catch (cv_bridge::Exception &e) {
+                ROS_ERROR("cv_bridge exception: %s", e.what());
+            }
+
+            cv::Mat original_image = cv_ptr->image;
+
+            cv::imshow(CONTROL_WINDOW, original_image);
 
             // grab the camera info
             sensor_msgs::CameraInfoPtr ci(new sensor_msgs::CameraInfo(cinfo_->getCameraInfo()));
@@ -224,6 +247,18 @@ namespace usb_cam {
         bool spin() {
             ros::Rate loop_rate(this->framerate_);
             while (node_.ok()) {
+
+                //cv::namedWindow(OPENCV_WINDOW);
+                cv::namedWindow(CONTROL_WINDOW, CV_WINDOW_AUTOSIZE); //create a window called "Control"
+
+                //Create trackbars in "Control" window
+                cvCreateTrackbar("Exposure", "Control", &exposure, 500);
+                cvCreateTrackbar("White Balance", "Control", &white_balance, 8000);
+
+                cam_.set_v4l_parameter("exposure_absolute", exposure);
+                cam_.set_v4l_parameter("white_balance_temperature", white_balance);
+
+                cv::waitKey(1);
 
                 if (cam_.is_capturing()) {
                     if (!take_and_send_image()) ROS_WARN("USB camera did not respond in time.");
