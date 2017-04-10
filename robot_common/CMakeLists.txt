@@ -129,9 +129,13 @@ include_directories(
 # )
 
 ## Declare a C++ executable
-add_executable(sendCommand src/SendCommand.cpp)
-add_dependencies(sendCommand ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(sendCommand ${catkin_LIBRARIES} )
+add_executable(sendCommand1 src/SendCommand1.cpp)
+add_dependencies(sendCommand1 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(sendCommand1 ${catkin_LIBRARIES} )
+
+add_executable(sendCommand2 src/SendCommand2.cpp)
+add_dependencies(sendCommand2 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(sendCommand2 ${catkin_LIBRARIES} )
 
 add_executable(robot_main src/RobotMain.cpp)
 add_dependencies(robot_main ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
