@@ -56,28 +56,28 @@ void keyLoop(ros::Publisher pub) {
             case KEYCODE_L: {
                 robot_comm::Motor msgL;
                 msgL.name = "Robot 1";
-                msgL.left_power = -384;
-                msgL.right_power = 384;
+                msgL.left_power = -584;
+                msgL.right_power = 584;
                 pub.publish(msgL);
             } break;
             case KEYCODE_R: {
                 robot_comm::Motor msgR;
                 msgR.name = "Robot 1";
-                msgR.left_power = 384;
-                msgR.right_power = -384;
+                msgR.left_power = 584;
+                msgR.right_power = -584;
                 pub.publish(msgR);
             } break;
             case KEYCODE_U: {
                 robot_comm::Motor msgU;
                 msgU.name = "Robot 1";
-                msgU.left_power = 1023;
+                msgU.left_power = 900;
                 msgU.right_power = 1023;
                 pub.publish(msgU);
             } break;
             case KEYCODE_D: {
                 robot_comm::Motor msgD;
                 msgD.name = "Robot 1";
-                msgD.left_power = -1023;
+                msgD.left_power = -800;
                 msgD.right_power = -1023;
                 pub.publish(msgD);
             } break;
