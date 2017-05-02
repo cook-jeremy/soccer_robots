@@ -4,6 +4,15 @@
 
 #define ssid "MontyPylon"
 #define pass "soccer_robots"
+
+IPAddress ip(192, 168, 0, 125); // where xx is the desired IP Address
+IPAddress gateway(192, 168, 1, 1); // set gateway to match your network
+Serial.print(F("Setting static ip to : "));
+Serial.println(ip);
+IPAddress subnet(255, 255, 255, 0); // set subnet mask to match your
+network
+WiFi.config(ip, gateway, subnet);
+
 WiFiUDP Udp;
 unsigned int localPort = 2390; // local port to listen on
 char packetBuffer[255]; //buffer to hold incoming packet
