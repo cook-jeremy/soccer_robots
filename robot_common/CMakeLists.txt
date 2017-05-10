@@ -13,8 +13,6 @@ find_package(catkin REQUIRED COMPONENTS
         message_generation
         cv_bridge
         image_transport
-        pcl_ros
-        pcl_conversions
         sensor_msgs
         actionlib
         actionlib_msgs

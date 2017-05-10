@@ -1,0 +1,22 @@
+<package format="2">
+  <name>soccer_robots</name>
+  <version>0.1.1</version>
+  <description>
+    Common packages and data for Soccer Robots project.
+  </description> 
+  <license>BSD</license>
+
+  <author email="jeremycook97@gmail.com">Jeremy Cook</author>
+  <maintainer email="jeremycook97@gmail.com">Jeremy Cook</maintainer>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>robot_common</exec_depend>
+  <exec_depend>usb_cam</exec_depend>
+
+  <export>
+    <metapackage/>
+    <architecture_independent/>
+  </export>
+
+</package>

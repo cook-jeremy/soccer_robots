@@ -4,7 +4,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
-#include <robot_comm/Motor.h>
+#include <robot_common/Motor.h>
+#include <robotNames.h>
 
 using namespace std;
 
@@ -54,7 +55,7 @@ string formatPower(int power) {
     return cmdFin;
 }
 
-string returnCommand(robot_comm::Motor incoming) {
+string returnCommand(robot_common::Motor incoming) {
 
     if(incoming.right_power > 1023 || incoming.right_power < -1023 || incoming.left_power > 1023 || incoming.left_power < -1023) {
         cout << "POWER IS TOO LARGE" << endl;
@@ -72,7 +73,7 @@ string returnCommand(robot_comm::Motor incoming) {
     return command.str();
 }
 
-void sendMsg(robot_comm::Motor incoming) {
+void sendMsg(robot_common::Motor incoming) {
     int result = 0;
     int sock = socket(AF_INET, SOCK_DGRAM, 0);
 
@@ -90,7 +91,7 @@ void sendMsg(robot_comm::Motor incoming) {
 
 
     sockaddr_storage addrDest = {};
-    result = resolvehelper("192.168.0.100", AF_INET, "2390", &addrDest);
+    result = resolvehelper(ROBOT_1_IP.c_str(), AF_INET, "2390", &addrDest);
     if (result != 0)
     {
         int lasterror = errno;
@@ -108,7 +109,7 @@ void sendMsg(robot_comm::Motor incoming) {
     std::cout << result << " bytes sent" << std::endl;
 }
 
-void motorCallBack(const robot_comm::Motor::ConstPtr& msg)
+void motorCallBack(const robot_common::Motor::ConstPtr& msg)
 {
     cout << "Incoming command for: " << msg->name << endl;
     cout << "Right power: " << msg->right_power << endl;
@@ -121,6 +122,7 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "sendCommand1");
     ros::NodeHandle n;
     ros::Subscriber sub = n.subscribe("/motor", 1000, motorCallBack);
+    std::cout << "Sending commands to this IP: " << ROBOT_1_IP << std::endl;
     ros::spin();
     return 0;
 }

@@ -1,6 +1,6 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
-#include <robot_comm/Motor.h>
+#include <robot_common/Motor.h>
 #include <sstream>
 #include <signal.h>
 #include <termios.h>
@@ -54,35 +54,35 @@ void keyLoop(ros::Publisher pub) {
 
         switch (c) {
             case KEYCODE_L: {
-                robot_comm::Motor msgL;
+                robot_common::Motor msgL;
                 msgL.name = "Robot 1";
                 msgL.left_power = -584;
                 msgL.right_power = 584;
                 pub.publish(msgL);
             } break;
             case KEYCODE_R: {
-                robot_comm::Motor msgR;
+                robot_common::Motor msgR;
                 msgR.name = "Robot 1";
                 msgR.left_power = 584;
                 msgR.right_power = -584;
                 pub.publish(msgR);
             } break;
             case KEYCODE_U: {
-                robot_comm::Motor msgU;
+                robot_common::Motor msgU;
                 msgU.name = "Robot 1";
                 msgU.left_power = 900;
                 msgU.right_power = 1023;
                 pub.publish(msgU);
             } break;
             case KEYCODE_D: {
-                robot_comm::Motor msgD;
+                robot_common::Motor msgD;
                 msgD.name = "Robot 1";
                 msgD.left_power = -800;
                 msgD.right_power = -1023;
                 pub.publish(msgD);
             } break;
             case 's': {
-                robot_comm::Motor msgS;
+                robot_common::Motor msgS;
                 msgS.name = "Robot 1";
                 msgS.left_power = 0;
                 msgS.right_power = 0;
@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "robot_main");
     ros::NodeHandle n;
-    ros::Publisher command_pub = n.advertise<robot_comm::Motor>("/motor", 1000);
+    ros::Publisher command_pub = n.advertise<robot_common::Motor>("/motor", 1000);
     signal(SIGINT, quit);
     keyLoop(command_pub);
     return 0;
