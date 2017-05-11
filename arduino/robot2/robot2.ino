@@ -5,10 +5,10 @@
 // ROBOT 2
 
 // Static IP details...
-IPAddress ip(192, 168, 0, 202);
-IPAddress gateway(192, 168, 0, 1);
+IPAddress ip(192, 168, 1, 202);
+IPAddress gateway(192, 168, 1, 1);
 IPAddress subnet(255, 255, 255, 0);
-IPAddress dns(192, 168, 0, 1);
+IPAddress dns(0, 0, 0, 0);
 
 #define ssid "MontyPylon"
 #define pass "soccer_robots"
@@ -55,7 +55,7 @@ void setup() {
 
   
   // Static IP Setup Info Here...
-  WiFi.config(ip, dns, gateway, subnet);
+  WiFi.config(ip, gateway, subnet, dns);
 
   WiFi.begin(ssid, pass);
 
