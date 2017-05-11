@@ -24,10 +24,10 @@ uint32_t green = strip.Color(0, 255, 0);
 uint32_t blue = strip.Color(0, 0, 255);
 uint32_t none = strip.Color(0, 0, 0);
 
-int rightB = 15;
-int rightF = 12;
-int leftF = 14;
-int leftB = 4;
+int rightB = 12;
+int rightF = 15;
+int leftF = 4;
+int leftB = 14;
 
 void setup() {
   pinMode(leftF, OUTPUT);

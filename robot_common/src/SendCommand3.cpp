@@ -91,7 +91,7 @@ void sendMsg(robot_common::Motor incoming) {
 
 
     sockaddr_storage addrDest = {};
-    result = resolvehelper(ROBOT_2_IP.c_str(), AF_INET, "2390", &addrDest);
+    result = resolvehelper(ROBOT_3_IP.c_str(), AF_INET, "2390", &addrDest);
     if (result != 0)
     {
         int lasterror = errno;
@@ -119,10 +119,10 @@ void motorCallBack(const robot_common::Motor::ConstPtr& msg)
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "sendCommand2");
+    ros::init(argc, argv, "sendCommand3");
     ros::NodeHandle n;
     ros::Subscriber sub = n.subscribe("/motor", 1000, motorCallBack);
-    std::cout << "Sending commands to this IP: " << ROBOT_2_IP << std::endl;
+    std::cout << "Sending commands to this IP: " << ROBOT_3_IP << std::endl;
     ros::spin();
     return 0;
 }

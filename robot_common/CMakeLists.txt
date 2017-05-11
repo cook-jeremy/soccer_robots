@@ -135,6 +135,10 @@ add_executable(sendCommand2 src/SendCommand2.cpp)
 add_dependencies(sendCommand2 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(sendCommand2 ${catkin_LIBRARIES} )
 
+add_executable(sendCommand3 src/SendCommand3.cpp)
+add_dependencies(sendCommand3 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(sendCommand3 ${catkin_LIBRARIES} )
+
 add_executable(robot_main src/RobotMain.cpp)
 add_dependencies(robot_main ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(robot_main ${catkin_LIBRARIES} )
