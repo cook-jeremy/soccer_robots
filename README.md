@@ -3,7 +3,8 @@ This repositort contains all top-level ROS packages for my autonomous soccer rob
 
 <p align="center">
   <img src="http://i.imgur.com/T1JxGsI.jpg" width="350"/>
-  <img src="http://i.imgur.com/T1JxGsI.jpg" width="450"/>
+  <img src="http://i.imgur.com/T1JxGsI.jpg" width="350"/>
+  <img src="http://i.imgur.com/T1JxGsI.jpg" width="350"/>
 </p>
 
 ![alt text](http://i.imgur.com/T1JxGsI.jpg)
