@@ -10,7 +10,7 @@ This repository contains all top-level ROS packages for my autonomous soccer rob
 
 ## Installation
 
-### From Source
+### ROS
 
 This project is built for ROS Kinetic on Ubuntu 16.04, which you can [install here](http://wiki.ros.org/kinetic/Installation/Ubuntu).
 
@@ -46,3 +46,16 @@ $ catkin_make
 $ source devel/setup.bash
 ```
 If everthing was installed correctly, the project should build with no errors, and is ready to launch!
+
+### Arduino IDE
+
+In order to upload the sketches to the robots, the Arduino IDE must be installed, which can be [downloaded here](https://www.arduino.cc/en/Main/Software).
+
+Once the software is downloaded, navigate into the folder it was downloaded in and run the following command in a shell.
+```
+$ cd <path to arduino>
+$ ./install.sh
+```
+
+After it is installed, the ESP-8266 libraries must be installed. First, open the Arduino IDE, click on File --> Preferences, then add the following link to the Additional Boards Manager URL's: http://arduino.esp8266.com/stable/package_esp8266com_index.json
+
