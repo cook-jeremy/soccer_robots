@@ -1,10 +1,11 @@
 # Soccer Robots
-This repositort contains all top-level ROS packages for my autonomous soccer robots project. The size and shape of these robots are cube shaped with dimensions approximately 11.5x11.5x9 cm^3. All the robot parts are 3D printed, with the only exceptions for the wheels and tracks which were purchased from Pololu.
+This repositort contains all top-level ROS packages for my autonomous soccer robots project. The size and shape of these robots are cube shaped with dimensions approximately 11.5x11.5x9 cm^3. All the robot parts are 3D printed, with the only exceptions for the wheels and tracks which were purchased from Pololu. The robots positions are tracked using OpenCV color recognition, and commands are sent to the robots via UDP packets.
 
 <p align="center">
+  <img src="http://i.imgur.com/n0Dbfh6.jpg" width="350"/>
   <img src="http://i.imgur.com/T1JxGsI.jpg" width="350"/>
-  <img src="http://i.imgur.com/T1JxGsI.jpg" width="350"/>
-  <img src="http://i.imgur.com/T1JxGsI.jpg" width="350"/>
+  <img src="http://i.imgur.com/2LMFLc8.jpg" width="350"/>
+  <img src="http://i.imgur.com/2LMFLc8.jpg" width="350"/>
 </p>
 
 ![alt text](http://i.imgur.com/T1JxGsI.jpg)
