@@ -40,20 +40,8 @@ public:
         image_sub_ = it_.subscribe("/usb_cam/image_raw", 1, &ImageConverter::imageCb, this);
         //image_pub_ = it_.advertise("/image_converter/output_video", 1);
 
-        /**
-        //cv::namedWindow(OPENCV_WINDOW);
-        cv::namedWindow("Control", CV_WINDOW_AUTOSIZE); //create a window called "Control"
-
-        //Create trackbars in "Control" window
-        cvCreateTrackbar("LowH", "Control", &iLowH, 179); //Hue (0 - 255)
-        cvCreateTrackbar("HighH", "Control", &iHighH, 179);
-
-        cvCreateTrackbar("LowS", "Control", &iLowS, 255); //Saturation (0 - 255)
-        cvCreateTrackbar("HighS", "Control", &iHighS, 255);
-
-        cvCreateTrackbar("LowV", "Control", &iLowV, 255); //Value (0 - 255)
-        cvCreateTrackbar("HighV", "Control", &iHighV, 255);
-         **/
+        cv::namedWindow("Auto-Thresholded Image", CV_WINDOW_NORMAL);
+        cv::namedWindow("Original", CV_WINDOW_NORMAL);
     }
 
     ~ImageConverter() {
@@ -92,7 +80,7 @@ public:
         cv::erode(autoThresh, autoThresh, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3)) );
         **/
 
-        inRange(imgHSV, cv::Scalar(MIN_HUE, MIN_SAT, MIN_VAL), cv::Scalar(MAX_HUE, MAX_SAT, MAX_VAL), autoThreshContour);
+        inRange(imgHSV, cv::Scalar(RED_MIN_HUE, RED_MIN_SAT, RED_MIN_VAL), cv::Scalar(RED_MAX_HUE, RED_MAX_SAT, RED_MAX_VAL), autoThreshContour);
         cv::erode(autoThreshContour, autoThreshContour, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3)) );
         cv::dilate( autoThreshContour, autoThreshContour, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(4, 4)) );
         cv::dilate( autoThreshContour, autoThreshContour, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(4, 4)) );
@@ -141,7 +129,7 @@ public:
 
             double width = original_image.cols;
             offset = mc[numMax].x - (width/2);
-            std::cout << "Offset: " << offset << std::endl;
+            //std::cout << "Offset: " << offset << std::endl;
             //Point2f middle = Point2f(original_image.cols / 2, original_image.rows / 2);
             //circle(original_image, middle, 5, CV_RGB(255, 255, 0), -1, 8, 0);
             //Point2f middle2 = Point2f(mc[numMax].x, original_image.rows / 2);

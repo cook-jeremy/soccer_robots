@@ -50,7 +50,7 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB port only
   }
 
-  setColor("blue");
+  setColor("red");
   strip.show();
 
   
@@ -68,6 +68,10 @@ void setup() {
   Serial.println();
   Serial.println("Connected to wifi");
   printWifiStatus();
+
+  setColor("green");
+  delay(500);
+  setColor("none");
 
   Serial.println("\nWaiting for incoming messages...");
   // if you get a connection, report back via serial:

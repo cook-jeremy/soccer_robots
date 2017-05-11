@@ -249,7 +249,7 @@ namespace usb_cam {
             while (node_.ok()) {
 
                 //cv::namedWindow(OPENCV_WINDOW);
-                cv::namedWindow(CONTROL_WINDOW, CV_WINDOW_AUTOSIZE); //create a window called "Control"
+                cv::namedWindow(CONTROL_WINDOW, CV_WINDOW_NORMAL); //create a window called "Control"
 
                 //Create trackbars in "Control" window
                 cvCreateTrackbar("Exposure", "Control", &exposure, 500);

@@ -41,7 +41,7 @@
 #include <sstream>
 #include <std_srvs/Empty.h>
 
-int exposure = 100;
+int exposure = 20;
 int white_balance = 4000;
 
 namespace usb_cam {
