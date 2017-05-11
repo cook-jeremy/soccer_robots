@@ -5,7 +5,7 @@ This repositort contains all top-level ROS packages for my autonomous soccer rob
 
 ### From Source
 
-This project is built for ROS Kinetic on Ubuntu 16.04, which you can [install here](http://wiki.ros.org/kinetic/Installation/Ubuntu)
+This project is built for ROS Kinetic on Ubuntu 16.04, which you can [install here](http://wiki.ros.org/kinetic/Installation/Ubuntu).
 
 Then, make sure the ROS_DISTRO environment variable is set correctly:
 
