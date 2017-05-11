@@ -1,32 +1,24 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
-#include <Adafruit_NeoPixel.h>
+
+// ROBOT 3
+
+// Static IP details...
+IPAddress ip(192, 168, 0, 203);
+IPAddress gateway(192, 168, 0, 1);
+IPAddress subnet(255, 255, 255, 0);
+IPAddress dns(192, 168, 0, 1);
+
 
 #define ssid "MontyPylon"
 #define pass "soccer_robots"
-
-IPAddress ip(192, 168, 0, 125); // where xx is the desired IP Address
-IPAddress gateway(192, 168, 1, 1); // set gateway to match your network
-Serial.print(F("Setting static ip to : "));
-Serial.println(ip);
-IPAddress subnet(255, 255, 255, 0); // set subnet mask to match your
-network
-WiFi.config(ip, gateway, subnet);
-
 WiFiUDP Udp;
 unsigned int localPort = 2390; // local port to listen on
 char packetBuffer[255]; //buffer to hold incoming packet
 char  ReplyBuffer[] = "acknowledged"; // a string to send back
 
-#define LED 5
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(5, LED, NEO_GRB + NEO_KHZ800);
-uint32_t red = strip.Color(255, 0, 0);
-uint32_t green = strip.Color(0, 255, 0);
-uint32_t blue = strip.Color(0, 0, 255);
-uint32_t none = strip.Color(0, 0, 0);
-
-int rightB = 15;
-int rightF = 12;
+int rightB = 12;
+int rightF = 15;
 int leftF = 14;
 int leftB = 4;
 
@@ -39,20 +31,14 @@ void setup() {
   analogWrite(leftF, 0);
   analogWrite(rightB, 0);
   analogWrite(leftB, 0);
-
-  //LED
-  strip.begin();
-  strip.show(); // Initialize all pixels to 'off'
-  strip.setBrightness(64);
-  
   //Initialize serial and wait for port to open:
   Serial.begin(115200);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
   }
-
-  setColor("blue");
-  strip.show();
+  
+  // Static IP Setup Info Here...
+  WiFi.config(ip, dns, gateway, subnet);
   
   WiFi.begin(ssid, pass);
 
@@ -72,6 +58,7 @@ void setup() {
 }
 
 void loop() {
+
   // if there's data available, read a packet
   int packetSize = Udp.parsePacket();
   if (packetSize) {
@@ -161,28 +148,4 @@ void printWifiStatus() {
   Serial.print("signal strength (RSSI):");
   Serial.print(rssi);
   Serial.println(" dBm");
-}
-
-void setColor(String color) {
-  if(color == "red") {
-    for(int a = 0; a < 5; a++) {
-      strip.setPixelColor(a, red);
-    }
-    strip.show();
-  } else if(color == "green") {
-    for(int a = 0; a < 5; a++) {
-      strip.setPixelColor(a, green);
-    }
-    strip.show();
-  } else if(color == "blue") {
-    for(int a = 0; a < 5; a++) {
-      strip.setPixelColor(a, blue);
-    }
-    strip.show();
-  } else if(color == "none") {
-    for(int a = 0; a < 5; a++) {
-      strip.setPixelColor(a, none);
-    }
-    strip.show();
-  }
 }

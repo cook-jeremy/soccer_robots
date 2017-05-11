@@ -1,6 +1,15 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 
+// ROBOT 1
+
+// Static IP details...
+IPAddress ip(192, 168, 0, 201);
+IPAddress gateway(192, 168, 0, 1);
+IPAddress subnet(255, 255, 255, 0);
+IPAddress dns(192, 168, 0, 1);
+
+
 #define ssid "MontyPylon"
 #define pass "soccer_robots"
 WiFiUDP Udp;
@@ -28,7 +37,10 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB port only
   }
   
-   WiFi.begin(ssid, pass);
+  // Static IP Setup Info Here...
+  WiFi.config(ip, dns, gateway, subnet);
+  
+  WiFi.begin(ssid, pass);
 
   Serial.print("Connecting");
   while (WiFi.status() != WL_CONNECTED)

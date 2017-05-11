@@ -7,8 +7,6 @@
 #include <robot_common/Motor.h>
 #include <robotNames.h>
 
-int test = 0;
-
 using namespace std;
 
 int resolvehelper(const char* hostname, int family, const char* service, sockaddr_storage* pAddr)
