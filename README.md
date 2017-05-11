@@ -59,3 +59,12 @@ $ ./install.sh
 
 After it is installed, the ESP-8266 libraries must be installed. First, open the Arduino IDE, click on File --> Preferences, then add the following link to the Additional Boards Manager URL's: http://arduino.esp8266.com/stable/package_esp8266com_index.json
 
+Finally, go to Tools --> Board --> Boards Manager, search for "esp8266", and install the library.
+
+### Additional Drivers
+
+Before we can access the camera, we need to install it's drivers. Run this command to install the necessary drivers:
+```
+$ sudo apt-get install v4l-utils
+```
+
