@@ -1,24 +1,15 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(robot_common)
+project(cs309_hw2_eid)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-        roscpp
-        rospy
-        std_msgs
-        geometry_msgs
-        turtlesim
-        message_generation
-        cv_bridge
-        image_transport
-        sensor_msgs
-        actionlib
-        actionlib_msgs
-        roscpp
-        rospy
-        tf
+  roscpp
+  rospy
+  std_msgs
+  turtlesim
+  geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -55,7 +46,11 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(DIRECTORY msg FILES Motor.msg)
+# add_message_files(
+#   FILES
+#   Message1.msg
+#   Message2.msg
+# )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -72,10 +67,10 @@ add_message_files(DIRECTORY msg FILES Motor.msg)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-)
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -107,7 +102,10 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-        CATKIN_DEPENDS message_runtime
+#  INCLUDE_DIRS include
+#  LIBRARIES cs309_turtlesim
+#  CATKIN_DEPENDS roscpp rospy std_msgs
+#  DEPENDS system_lib
 )
 
 ###########
@@ -118,63 +116,32 @@ catkin_package(
 ## Your package locations should be listed before other locations
 # include_directories(include)
 include_directories(
-  ${catkin_INCLUDE_DIRS} include
+  ${catkin_INCLUDE_DIRS}
+  include
 )
 
 ## Declare a C++ library
-# add_library(robot_common
-#   src/${PROJECT_NAME}/robot_common.cpp
+# add_library(cs309_turtlesim
+#   src/${PROJECT_NAME}/cs309_turtlesim.cpp
 # )
-
-## Declare a C++ executable
-add_executable(sendCommand1 src/SendCommand1.cpp)
-add_dependencies(sendCommand1 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(sendCommand1 ${catkin_LIBRARIES} )
-
-add_executable(sendCommand2 src/SendCommand2.cpp)
-add_dependencies(sendCommand2 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(sendCommand2 ${catkin_LIBRARIES} )
-
-add_executable(sendCommand3 src/SendCommand3.cpp)
-add_dependencies(sendCommand3 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(sendCommand3 ${catkin_LIBRARIES} )
-
-add_executable(robot_main src/RobotMain.cpp)
-add_dependencies(robot_main ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(robot_main ${catkin_LIBRARIES} )
-
-add_executable(teleop src/Teleop.cpp)
-add_dependencies(teleop ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(teleop ${catkin_LIBRARIES} )
-
-add_executable(image_handler src/ImageHandler.cpp)
-add_dependencies(image_handler ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(image_handler ${catkin_LIBRARIES} )
-
-add_executable(color_config src/color_config.cpp include/ImageHandler.h)
-add_dependencies(color_config ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(color_config ${catkin_LIBRARIES} )
-
-add_executable(main src/Main.cpp)
-add_dependencies(main ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(main ${catkin_LIBRARIES} )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(robot_common ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(cs309_turtlesim ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-# add_executable(robot_comm_node src/robot_comm_node.cpp)
+add_executable(turtle_graph_traverse_hw2 src/turtle_graph_traverse_hw2.cpp)
+add_executable(turtle_graph_traverse_evaluator src/turtle_graph_traverse_evaluator.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(robot_comm_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(turtle_graph_traverse_hw2 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(turtle_graph_traverse_evaluator ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(robot_comm_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(turtle_graph_traverse_hw2 ${catkin_LIBRARIES} )
+target_link_libraries(turtle_graph_traverse_evaluator ${catkin_LIBRARIES} )
 
 #############
 ## Install ##
@@ -191,7 +158,7 @@ target_link_libraries(main ${catkin_LIBRARIES} )
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS robot_common robot_comm_node
+# install(TARGETS cs309_turtlesim cs309_turtlesim_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -216,7 +183,7 @@ target_link_libraries(main ${catkin_LIBRARIES} )
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_robot_comm.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_cs309_turtlesim.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

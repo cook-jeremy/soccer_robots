@@ -1,5 +1,7 @@
 #include "ros/ros.h"
 
+const int NUM_COLORS = 3;
+
 #define RED_MIN_HUE 0
 #define RED_MAX_HUE 9
 #define RED_MIN_SAT 176
@@ -21,17 +23,5 @@
 #define YELLOW_MIN_VAL 136
 #define YELLOW_MAX_VAL 255
 
-// RED
-// H: 0-9
-// S: 176-255
-// V: 85-255
-
-// BLUE
-// H: 87-131
-// S: 3-255
-// V: 55-255
-
-// YELLOW
-// H: 16-25
-// S: 91-255
-// V: 136-255
+const int MIN_AREA = 50;
+const int MAX_AREA = 600;
