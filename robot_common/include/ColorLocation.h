@@ -3,26 +3,18 @@
 #ifndef __COLORLOCATION_H_INCLUDED__
 #define __COLORLOCATION_H_INCLUDED__
 
-//=================================
-// forward declared dependencies
-class ColorLocation;
-//=================================
-// included dependencies
-#include "ros/ros.h"
-#include <string.h>
-#include <vector>
-using namespace std;
-//=================================
-// the actual class
-class ColorLocation {
-    string color;
-    int x;
-    int y;
+#include <string>
 
-    public:
-        ColorLocation(int, int);
-        string getColor();
-        vector<int> getPos();
+class ColorLocation
+{
+    std::string color;
+    float x;
+    float y;
+public:
+    ColorLocation(std::string col, float x, float y);
+    std::string getColor();
+    float getX();
+    float getY();
 };
 
 #endif // __MYCLASS_H_INCLUDED__
