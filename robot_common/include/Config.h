@@ -1,7 +1,29 @@
 #ifndef __CONFIG_H_INCLUDED__
 #define __CONFIG_H_INCLUDED__
 
-const int NUM_COLORS = 3;
+
+#define ROBOT_1_NAME "Lisa"
+#define ROBOT_1_IP "192.168.1.201"
+#define ROBOT_1_TOP_LEFT "blue"
+#define ROBOT_1_TOP_RIGHT "yellow"
+#define ROBOT_1_BOTTOM_LEFT "red"
+#define ROBOT_1_BOTTOM_RIGHT "blue"
+
+std::string ROBOT_2_NAME = "";
+std::string ROBOT_2_IP = "192.168.1.202";
+std::string ROBOT_2_TOP_LEFT = "";
+std::string ROBOT_2_TOP_RIGHT = "";
+std::string ROBOT_2_BOTTOM_LEFT = "";
+std::string ROBOT_2_BOTTOM_RIGHT = "";
+
+std::string ROBOT_3_NAME = "";
+std::string ROBOT_3_IP = "192.168.1.203";
+std::string ROBOT_3_TOP_LEFT = "";
+std::string ROBOT_3_TOP_RIGHT = "";
+std::string ROBOT_3_BOTTOM_LEFT = "";
+std::string ROBOT_3_BOTTOM_RIGHT = "";
+
+#define NUM_COLORS = 3;
 
 #define RED_MIN_HUE 0
 #define RED_MAX_HUE 9
@@ -24,7 +46,10 @@ const int NUM_COLORS = 3;
 #define YELLOW_MIN_VAL 39
 #define YELLOW_MAX_VAL 255
 
-const int MIN_AREA = 50;
-const int MAX_AREA = 600;
+#define MIN_AREA 50
+#define MAX_AREA 600
+#define DIAG_DIST_MIN 45
+#define DIAG_DIST_MAX 85
+#define DIAG_DIST_CENTER 15
 
 #endif

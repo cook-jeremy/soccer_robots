@@ -17,6 +17,30 @@ void Robot::setColors(std::string top_left, std::string top_right, std::string b
     bottom_right_color = bot_right;
 }
 
+bool Robot::isLocated() {
+    return located;
+}
+
+void Robot::found(bool isFound) {
+    located = isFound;
+}
+
+std::string Robot::getTopLeft() {
+    return top_left_color;
+}
+
+std::string Robot::getTopRight() {
+    return top_right_color;
+}
+
+std::string Robot::getBottomLeft() {
+    return bottom_left_color;
+}
+
+std::string Robot::getBottomRight() {
+    return bottom_right_color;
+}
+
 float Robot::getX() {
     return center_x;
 }

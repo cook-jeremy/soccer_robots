@@ -14,6 +14,7 @@ class Robot {
     std::string top_right_color;
     std::string bottom_left_color;
     std::string bottom_right_color;
+    bool located = false;
     float center_x;
     float center_y;
     float angle;
@@ -23,6 +24,12 @@ public:
     void setColors(std::string, std::string, std::string, std::string);
     float getX();
     float getY();
+    void found(bool);
+    bool isLocated();
+    std::string getTopLeft();
+    std::string getTopRight();
+    std::string getBottomLeft();
+    std::string getBottomRight();
 };
 
 
