@@ -26,9 +26,9 @@ ImageHandler::ImageHandler(ros::NodeHandle n, image_transport::ImageTransport it
     image_sub_ = it_.subscribe("/usb_cam/image_raw", 1, &ImageHandler::imageCb, this);
     //image_pub_ = it_.advertise("/image_converter/output_video", 1);
 
-    cv::namedWindow("Auto-Thresholded Image", CV_WINDOW_NORMAL);
-    cv::resizeWindow("Auto-Thresholded Image", 800, 600);
-    cv::moveWindow("Auto-Thresholded Image", 300, 300);
+    //cv::namedWindow("Auto-Thresholded Image", CV_WINDOW_NORMAL);
+    //cv::resizeWindow("Auto-Thresholded Image", 800, 600);
+    //cv::moveWindow("Auto-Thresholded Image", 300, 300);
 
     cv::namedWindow("Original", CV_WINDOW_NORMAL);
     cv::resizeWindow("Original", 800, 600);
@@ -73,7 +73,6 @@ std::vector<ColorLocation> ImageHandler::getColorAndPosition(cv::Mat original_im
             group.push_back(col);
         }
     }
-
     return group;
 }
 
@@ -95,7 +94,7 @@ void ImageHandler::imageCb(const sensor_msgs::ImageConstPtr &msg) {
 
     using namespace cv;
     cv::Mat original_image = cv_ptr->image;
-    image = original_image;
+    img_ptr = cv_ptr;
     cv::Mat imgHSV;
     cvtColor(original_image, imgHSV, cv::COLOR_BGR2HSV); // Conver to HSV
 
@@ -137,17 +136,24 @@ void ImageHandler::imageCb(const sensor_msgs::ImageConstPtr &msg) {
     }
 
 
-    cv::imshow("Auto-Thresholded Image", yellow_img);
-    cv::imshow("Original", original_image); //show the original image
+
     //pause for 3 ms
-    cv::waitKey(1);
+    //cv::waitKey(1);
 
     // Output modified video stream
     //image_pub_.publish(cv_ptr->toImageMsg());
 }
 
-void ImageHandler::drawCenter(Robot robot) {
-    cv::Point2f center(robot.getX(), robot.getY());
-    circle(image, center, 11, CV_RGB(51, 204, 166), 1, 8, 0);
+cv_bridge::CvImagePtr ImageHandler::getImage() {
+    return img_ptr;
 }
 
+void ImageHandler::drawCenter(cv_bridge::CvImagePtr img, Robot robot) {
+    cv::Point2f center(robot.getX(), robot.getY());
+    cv::circle(img->image, center, 4, CV_RGB(255, 51, 153), -1, 8, 0);
+}
+
+void ImageHandler::updateImage() {
+    //cv::imshow("Auto-Thresholded Image", yellow_img);
+    cv::imshow("Original", img_ptr->image); //show the original image
+}

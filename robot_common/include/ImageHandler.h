@@ -26,14 +26,16 @@
 class ImageHandler {
     image_transport::Subscriber image_sub_;
     std::vector< std::vector<ColorLocation> > all_colors;
-    cv::Mat image;
+    cv_bridge::CvImagePtr img_ptr;
 public:
     ImageHandler(ros::NodeHandle n, image_transport::ImageTransport it);
     ~ImageHandler();
     std::vector<ColorLocation> getColorAndPosition(cv::Mat, cv::Mat, std::string);
     void imageCb(const sensor_msgs::ImageConstPtr &msg);
     std::vector< std::vector<ColorLocation> > getAllColors();
-    void drawCenter(Robot);
+    void drawCenter(cv_bridge::CvImagePtr, Robot);
+    cv_bridge::CvImagePtr getImage();
+    void updateImage();
 };
 
 #endif //PROJECT_IMAGEHANDLER_H
