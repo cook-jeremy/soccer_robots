@@ -48,3 +48,11 @@ float Robot::getX() {
 float Robot::getY() {
     return center_y;
 }
+
+void Robot::setX(float x) {
+    center_x = x;
+}
+
+void Robot::setY(float y) {
+    center_y = y;
+}

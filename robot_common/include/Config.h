@@ -9,21 +9,21 @@
 #define ROBOT_1_BOTTOM_LEFT "red"
 #define ROBOT_1_BOTTOM_RIGHT "blue"
 
-std::string ROBOT_2_NAME = "";
-std::string ROBOT_2_IP = "192.168.1.202";
-std::string ROBOT_2_TOP_LEFT = "";
-std::string ROBOT_2_TOP_RIGHT = "";
-std::string ROBOT_2_BOTTOM_LEFT = "";
-std::string ROBOT_2_BOTTOM_RIGHT = "";
+#define ROBOT_2_NAME ""
+#define ROBOT_2_IP "192.168.1.202"
+#define ROBOT_2_TOP_LEFT ""
+#define ROBOT_2_TOP_RIGHT ""
+#define ROBOT_2_BOTTOM_LEFT ""
+#define ROBOT_2_BOTTOM_RIGHT ""
 
-std::string ROBOT_3_NAME = "";
-std::string ROBOT_3_IP = "192.168.1.203";
-std::string ROBOT_3_TOP_LEFT = "";
-std::string ROBOT_3_TOP_RIGHT = "";
-std::string ROBOT_3_BOTTOM_LEFT = "";
-std::string ROBOT_3_BOTTOM_RIGHT = "";
+#define ROBOT_3_NAME ""
+#define ROBOT_3_IP "192.168.1.203"
+#define ROBOT_3_TOP_LEFT ""
+#define ROBOT_3_TOP_RIGHT ""
+#define ROBOT_3_BOTTOM_LEFT ""
+#define ROBOT_3_BOTTOM_RIGHT ""
 
-#define NUM_COLORS = 3;
+#define NUM_COLORS 3
 
 #define RED_MIN_HUE 0
 #define RED_MAX_HUE 9
@@ -48,8 +48,8 @@ std::string ROBOT_3_BOTTOM_RIGHT = "";
 
 #define MIN_AREA 50
 #define MAX_AREA 600
-#define DIAG_DIST_MIN 45
-#define DIAG_DIST_MAX 85
-#define DIAG_DIST_CENTER 15
+#define DIAG_DIST_MIN 35
+#define DIAG_DIST_MAX 75
+#define DIAG_DIST_CENTER 5
 
 #endif

@@ -3,11 +3,11 @@
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/opencv.hpp>
-#include <Config.h>
 #include <tf/tf.h>
 #include <actionlib/client/simple_action_client.h>
 #include <tf/transform_listener.h>
 #include <ImageHandler.h>
+#include "Robot.h"
 
 static const std::string OPENCV_WINDOW = "Image window";
 static const std::string OUT_WINDOW = "Output window";
@@ -56,8 +56,6 @@ std::vector<ColorLocation> ImageHandler::getColorAndPosition(cv::Mat original_im
     ///  Get the mass centers:
     std::vector<Point2f> mc(contours.size());
     std::vector<int> found;
-    double numMax = -1;
-    int maxFound = -1;
     for (int i = 0; i < contours.size(); i++) {
         mc[i] = Point2f(mu[i].m10 / mu[i].m00, mu[i].m01 / mu[i].m00);
         double area = mu[i].m00;
@@ -71,7 +69,7 @@ std::vector<ColorLocation> ImageHandler::getColorAndPosition(cv::Mat original_im
     if(!found.empty()) {
         for(int a = 0; a < found.size(); a++) {
             circle(original_image, mc[found.at(a)], 11, CV_RGB(51, 204, 166), 1, 8, 0);
-            ColorLocation col(colorName, mc[numMax].x, mc[numMax].y);
+            ColorLocation col(colorName, mc[found.at(a)].x, mc[found.at(a)].y);
             group.push_back(col);
         }
     }
@@ -97,6 +95,7 @@ void ImageHandler::imageCb(const sensor_msgs::ImageConstPtr &msg) {
 
     using namespace cv;
     cv::Mat original_image = cv_ptr->image;
+    image = original_image;
     cv::Mat imgHSV;
     cvtColor(original_image, imgHSV, cv::COLOR_BGR2HSV); // Conver to HSV
 
@@ -145,5 +144,10 @@ void ImageHandler::imageCb(const sensor_msgs::ImageConstPtr &msg) {
 
     // Output modified video stream
     //image_pub_.publish(cv_ptr->toImageMsg());
+}
+
+void ImageHandler::drawCenter(Robot robot) {
+    cv::Point2f center(robot.getX(), robot.getY());
+    circle(image, center, 11, CV_RGB(51, 204, 166), 1, 8, 0);
 }
 

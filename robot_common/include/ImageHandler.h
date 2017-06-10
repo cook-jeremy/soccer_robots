@@ -21,16 +21,19 @@
 #include <ImageHandler.h>
 #include "geometry_msgs/PoseArray.h"
 #include "ColorLocation.h"
+#include "Robot.h"
 
 class ImageHandler {
     image_transport::Subscriber image_sub_;
     std::vector< std::vector<ColorLocation> > all_colors;
+    cv::Mat image;
 public:
     ImageHandler(ros::NodeHandle n, image_transport::ImageTransport it);
     ~ImageHandler();
     std::vector<ColorLocation> getColorAndPosition(cv::Mat, cv::Mat, std::string);
     void imageCb(const sensor_msgs::ImageConstPtr &msg);
     std::vector< std::vector<ColorLocation> > getAllColors();
+    void drawCenter(Robot);
 };
 
 #endif //PROJECT_IMAGEHANDLER_H
