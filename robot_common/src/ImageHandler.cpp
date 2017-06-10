@@ -1,19 +1,13 @@
 #include <ros/ros.h>
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
-#include <sensor_msgs/image_encodings.h>
-#include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/opencv.hpp>
-#include <config.h>
-#include <string>
+#include <Config.h>
 #include <tf/tf.h>
-#include <vector>
 #include <actionlib/client/simple_action_client.h>
 #include <tf/transform_listener.h>
 #include <ImageHandler.h>
-#include "geometry_msgs/PoseArray.h"
-#include "ColorLocation.h"
 
 static const std::string OPENCV_WINDOW = "Image window";
 static const std::string OUT_WINDOW = "Output window";
@@ -85,8 +79,8 @@ std::vector<ColorLocation> ImageHandler::getColorAndPosition(cv::Mat original_im
     return group;
 }
 
-std::vector< std::vector<ColorLocation> > getAllColors() {
-
+std::vector< std::vector<ColorLocation> > ImageHandler::getAllColors() {
+    return all_colors;
 }
 
 void ImageHandler::imageCb(const sensor_msgs::ImageConstPtr &msg) {

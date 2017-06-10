@@ -5,7 +5,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <robot_common/Motor.h>
-#include <robotNames.h>
+#include <RobotNames.h>
 
 using namespace std;
 

@@ -7,7 +7,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/opencv.hpp>
 //#include "opencv2/core/version.hpp"
-#include <config.h>
+#include <Config.h>
 #include <string>
 #include <tf/tf.h>
 #include <actionlib/client/simple_action_client.h>
