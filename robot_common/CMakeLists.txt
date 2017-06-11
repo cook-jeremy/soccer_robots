@@ -151,7 +151,7 @@ add_executable(image_handler src/ImageHandler.cpp)
 add_dependencies(image_handler ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(image_handler ${catkin_LIBRARIES} )
 
-add_executable(color_config src/color_config.cpp include/ColorPair.h)
+add_executable(color_config src/ColorConfig.cpp include/ColorPair.h)
 add_dependencies(color_config ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(color_config ${catkin_LIBRARIES} )
 

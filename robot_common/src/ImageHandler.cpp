@@ -150,7 +150,7 @@ cv_bridge::CvImagePtr ImageHandler::getImage() {
 
 void ImageHandler::drawCenter(cv_bridge::CvImagePtr img, Robot robot) {
     cv::Point2f center(robot.getX(), robot.getY());
-    cv::circle(img->image, center, 4, CV_RGB(255, 51, 153), -1, 8, 0);
+    cv::circle(img->image, center, 4, CV_RGB(66, 235, 244), -1, 8, 0);
 }
 
 void ImageHandler::updateImage() {

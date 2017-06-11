@@ -44,8 +44,16 @@ public:
 
         //cv::namedWindow(OPENCV_WINDOW);
         cv::namedWindow("Control", CV_WINDOW_NORMAL); //create a window called "Control"
+        cv::resizeWindow("Control", 800, 600);
+        cv::moveWindow("Control", 300, 300);
+
         cv::namedWindow("Original", CV_WINDOW_NORMAL); //create a window called "Control"
+        cv::resizeWindow("Original", 800, 600);
+        cv::moveWindow("Original", 300, 300);
+
         cv::namedWindow("Auto-Thresholded Image", CV_WINDOW_NORMAL); //create a window called "Control"
+        cv::resizeWindow("Auto-Thresholded Image", 800, 600);
+        cv::moveWindow("Auto-Thresholded Image", 300, 300);
 
         //Create trackbars in "Control" window
         cvCreateTrackbar("LowH", "Control", &iLowH, 179); //Hue (0 - 255)
