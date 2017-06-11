@@ -10,7 +10,8 @@ std::string Robot::getIP() {
     return ip;
 }
 
-void Robot::setColors(std::string top_left, std::string top_right, std::string bot_left, std::string bot_right) {
+void Robot::setColors(std::string center, std::string top_left, std::string top_right, std::string bot_left, std::string bot_right) {
+    center_color = center;
     top_left_color = top_left;
     top_right_color = top_right;
     bottom_left_color = bot_left;
@@ -25,19 +26,23 @@ void Robot::found(bool isFound) {
     located = isFound;
 }
 
-std::string Robot::getTopLeft() {
+std::string Robot::getCenterColor() {
+    return center_color;
+}
+
+std::string Robot::getTopLeftColor() {
     return top_left_color;
 }
 
-std::string Robot::getTopRight() {
+std::string Robot::getTopRightColor() {
     return top_right_color;
 }
 
-std::string Robot::getBottomLeft() {
+std::string Robot::getBottomLeftColor() {
     return bottom_left_color;
 }
 
-std::string Robot::getBottomRight() {
+std::string Robot::getBottomRightColor() {
     return bottom_right_color;
 }
 

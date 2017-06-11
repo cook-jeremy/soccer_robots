@@ -14,6 +14,7 @@ class Robot {
     std::string top_right_color;
     std::string bottom_left_color;
     std::string bottom_right_color;
+    std::string center_color;
     bool located;
     float center_x;
     float center_y;
@@ -21,17 +22,18 @@ class Robot {
 public:
     Robot(std::string _name, std::string _ip) : name(_name), ip(_ip) {located = false;}
     std::string getIP();
-    void setColors(std::string, std::string, std::string, std::string);
+    void setColors(std::string, std::string, std::string, std::string, std::string);
     float getX();
     float getY();
     void setX(float);
     void setY(float);
     void found(bool);
     bool isLocated();
-    std::string getTopLeft();
-    std::string getTopRight();
-    std::string getBottomLeft();
-    std::string getBottomRight();
+    std::string getTopLeftColor();
+    std::string getTopRightColor();
+    std::string getBottomLeftColor();
+    std::string getBottomRightColor();
+    std::string getCenterColor();
 };
 
 

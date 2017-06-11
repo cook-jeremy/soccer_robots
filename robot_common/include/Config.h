@@ -8,6 +8,7 @@
 #define ROBOT_1_TOP_RIGHT "yellow"
 #define ROBOT_1_BOTTOM_LEFT "red"
 #define ROBOT_1_BOTTOM_RIGHT "blue"
+#define ROBOT_1_CENTER "orange"
 
 #define ROBOT_2_NAME ""
 #define ROBOT_2_IP "192.168.1.202"
@@ -23,32 +24,39 @@
 #define ROBOT_3_BOTTOM_LEFT ""
 #define ROBOT_3_BOTTOM_RIGHT ""
 
-#define NUM_COLORS 3
+#define NUM_COLORS 4
 
 #define RED_MIN_HUE 0
-#define RED_MAX_HUE 9
-#define RED_MIN_SAT 176
+#define RED_MAX_HUE 8
+#define RED_MIN_SAT 180
 #define RED_MAX_SAT 255
-#define RED_MIN_VAL 85
+#define RED_MIN_VAL 0
 #define RED_MAX_VAL 255
 
-#define BLUE_MIN_HUE 87
-#define BLUE_MAX_HUE 131
-#define BLUE_MIN_SAT 3
+#define BLUE_MIN_HUE 107
+#define BLUE_MAX_HUE 124
+#define BLUE_MIN_SAT 50
 #define BLUE_MAX_SAT 255
-#define BLUE_MIN_VAL 55
+#define BLUE_MIN_VAL 122
 #define BLUE_MAX_VAL 255
 
-#define YELLOW_MIN_HUE 16
+#define YELLOW_MIN_HUE 26
 #define YELLOW_MAX_HUE 30
 #define YELLOW_MIN_SAT 102
 #define YELLOW_MAX_SAT 255
 #define YELLOW_MIN_VAL 159
 #define YELLOW_MAX_VAL 255
 
+#define ORANGE_MIN_HUE 9
+#define ORANGE_MAX_HUE 20
+#define ORANGE_MIN_SAT 103
+#define ORANGE_MAX_SAT 255
+#define ORANGE_MIN_VAL 133
+#define ORANGE_MAX_VAL 255
+
 #define MIN_AREA 50
 #define MAX_AREA 600
-#define DIAG_DIST_MIN 35
+#define DIAG_DIST_MIN 25
 #define DIAG_DIST_MAX 75
 #define DIAG_DIST_CENTER 5
 

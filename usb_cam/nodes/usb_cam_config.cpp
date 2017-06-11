@@ -50,6 +50,7 @@ std::string CONTROL_WINDOW = "Control";
 
 int exposure = 100;
 int white_balance = 4000;
+int contrast = 100;
 
 namespace usb_cam {
 
@@ -96,7 +97,8 @@ namespace usb_cam {
             // grab the parameters
             node_.param("video_device", video_device_name_, std::string("/dev/video0"));
             node_.param("brightness", brightness_, -1); //0-255, -1 "leave alone"
-            node_.param("contrast", contrast_, -1); //0-255, -1 "leave alone"
+            //node_.param("contrast", contrast_, -1); //0-255, -1 "leave alone"
+            node_.param("contrast", contrast_, contrast); //0-255, -1 "leave alone"
             node_.param("saturation", saturation_, -1); //0-255, -1 "leave alone"
             node_.param("sharpness", sharpness_, -1); //0-255, -1 "leave alone"
             // possible values: mmap, read, userptr
@@ -254,9 +256,11 @@ namespace usb_cam {
                 //Create trackbars in "Control" window
                 cvCreateTrackbar("Exposure", "Control", &exposure, 500);
                 cvCreateTrackbar("White Balance", "Control", &white_balance, 8000);
+                cvCreateTrackbar("Contrast", "Control", &contrast, 255);
 
                 cam_.set_v4l_parameter("exposure_absolute", exposure);
                 cam_.set_v4l_parameter("white_balance_temperature", white_balance);
+                cam_.set_v4l_parameter("contrast", contrast);
 
                 cv::waitKey(1);
 

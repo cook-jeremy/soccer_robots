@@ -41,8 +41,9 @@
 #include <sstream>
 #include <std_srvs/Empty.h>
 
-int exposure = 20;
-int white_balance = 4000;
+int exposure = 29;
+int white_balance = 2849;
+int contrast = 170;
 
 namespace usb_cam {
 
@@ -89,7 +90,8 @@ namespace usb_cam {
             // grab the parameters
             node_.param("video_device", video_device_name_, std::string("/dev/video0"));
             node_.param("brightness", brightness_, -1); //0-255, -1 "leave alone"
-            node_.param("contrast", contrast_, -1); //0-255, -1 "leave alone"
+            //node_.param("contrast", contrast_, -1); //0-255, -1 "leave alone"
+            node_.param("contrast", contrast_, contrast);
             node_.param("saturation", saturation_, -1); //0-255, -1 "leave alone"
             node_.param("sharpness", sharpness_, -1); //0-255, -1 "leave alone"
             // possible values: mmap, read, userptr

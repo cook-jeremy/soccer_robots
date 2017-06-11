@@ -8,13 +8,14 @@
 using namespace std;
 
 class Main {
+    bool first;
 public:
     Main(ros::NodeHandle);
     std::vector<Robot> setupRobots();
     void findRobotPositions(std::vector<Robot> *robot_p, std::vector< std::vector<ColorLocation> >);
     std::vector<ColorPair> findDiagonal(std::vector< std::vector<ColorLocation> >, std::string, std::string);
     bool inDiagonalRange(ColorLocation, ColorLocation);
-    void findCorrectDiagonals(Robot *robot, std::vector<ColorPair>, std::vector<ColorPair>);
+    void findCorrectDiagonals(Robot *robot, std::vector< std::vector<ColorLocation> >, std::vector<ColorPair>, std::vector<ColorPair>);
     bool isColorsEmpty(std::vector< std::vector<ColorLocation> >);
 };
 
@@ -24,6 +25,7 @@ Main::Main(ros::NodeHandle n) {
 
     std::vector<Robot> robots = setupRobots();
     std::vector<Robot> * robot_p = &robots;
+    first = false;
 
     cout << "Starting Main" << endl;
     while (ros::ok())
@@ -48,7 +50,6 @@ Main::Main(ros::NodeHandle n) {
         colors.clear();
         if(img) {
             cv::imshow("Original", img->image);
-            //ih.updateImage();
         }
         cv::waitKey(1);
         ros::spinOnce();
@@ -75,18 +76,18 @@ void Main::findRobotPositions(std::vector<Robot> *robots, std::vector< std::vect
         for (int i = 0; i < robots->size(); i++) {
 
             // Find diagonal pair top left bottom right
-            std::vector<ColorPair> potential_pairs1 = findDiagonal(colors, robots->at(i).getTopLeft(),
-                                                                   robots->at(i).getBottomRight());
+            std::vector<ColorPair> potential_pairs1 = findDiagonal(colors, robots->at(i).getTopLeftColor(),
+                                                                   robots->at(i).getBottomRightColor());
             // Find diagonal pair top right bottom left
-            std::vector<ColorPair> potential_pairs2 = findDiagonal(colors, robots->at(i).getTopRight(),
-                                                                   robots->at(i).getBottomLeft());
+            std::vector<ColorPair> potential_pairs2 = findDiagonal(colors, robots->at(i).getTopRightColor(),
+                                                                   robots->at(i).getBottomLeftColor());
             // See which pair of diagonals has the same center point
-            findCorrectDiagonals(&robots->at(i), potential_pairs1, potential_pairs2);
+            findCorrectDiagonals(&robots->at(i), colors, potential_pairs1, potential_pairs2);
         }
     }
 }
 
-void Main::findCorrectDiagonals(Robot *robot, std::vector<ColorPair> pair1, std::vector<ColorPair> pair2) {
+void Main::findCorrectDiagonals(Robot *robot, std::vector< std::vector<ColorLocation> > colors, std::vector<ColorPair> pair1, std::vector<ColorPair> pair2) {
     for(int i = 0; i < pair1.size(); i++) {
         for(int j = 0; j < pair2.size(); j++) {
             float dist_x = pair1.at(i).getCenterX() - pair2.at(j).getCenterX();
@@ -94,7 +95,32 @@ void Main::findCorrectDiagonals(Robot *robot, std::vector<ColorPair> pair1, std:
             float pyth = std::sqrt(std::pow(dist_x, 2) + std::pow(dist_y, 2));
             float robot_center_x = pair1.at(i).getCenterX() - ((pair1.at(i).getCenterX() - pair2.at(j).getCenterX()) / 2);
             float robot_center_y = pair1.at(i).getCenterY() - ((pair1.at(i).getCenterY() - pair2.at(j).getCenterY()) / 2);
-            if(pyth < DIAG_DIST_CENTER) {
+
+            int color_position = -1;
+            for(int i = 0; i < colors.size(); i++) {
+                if(colors.at(i).size() != 0) {
+                    std::string currentColor = colors.at(i).at(0).getColor();
+                    if (currentColor == robot->getCenterColor()) {
+                        color_position = i;
+                        continue;
+                    }
+                }
+            }
+
+            bool color_at_center = false;
+            for(int j = 0; j < colors.at(color_position).size(); j++) {
+                float color_x = colors.at(color_position).at(j).getX();
+                float color_y = colors.at(color_position).at(j).getY();
+                float diff_x = color_x - robot_center_x;
+                float diff_y = color_y - robot_center_y;
+                float pyth2 = std::sqrt(std::pow(diff_x, 2) + std::pow(diff_y, 2));
+                if(pyth2 < DIAG_DIST_CENTER) {
+                    color_at_center = true;
+                    continue;
+                }
+            }
+
+            if(pyth < DIAG_DIST_CENTER && color_at_center) {
                 robot->found(true);
                 robot->setX(robot_center_x);
                 robot->setY(robot_center_y);
@@ -115,6 +141,7 @@ std::vector<ColorPair> Main::findDiagonal(std::vector< std::vector<ColorLocation
             if (currentColor == col1 && currentColor == col2) {
                 col1_position = i;
                 col2_position = i;
+                continue;
             } else if (currentColor == col1) {
                 col1_position = i;
             } else if (currentColor == col2) {
@@ -128,10 +155,14 @@ std::vector<ColorPair> Main::findDiagonal(std::vector< std::vector<ColorLocation
     if(col1_position != -1 && col2_position != -1) {
 
         if(col1_position == col2_position) {
-            for(int j = 1; j < colors.at(col2_position).size(); j++) {
-                if(inDiagonalRange(colors.at(col1_position).at(0), colors.at(col2_position).at(j))) {
-                    ColorPair pair(colors.at(col1_position).at(0), colors.at(col2_position).at(j));
-                    color_pair_list.push_back(pair);
+            for(int i = 0; i < colors.at(col1_position).size(); i++) {
+                for (int j = 0; j < colors.at(col2_position).size(); j++) {
+                    if(i != j) {
+                        if (inDiagonalRange(colors.at(col1_position).at(i), colors.at(col2_position).at(j))) {
+                            ColorPair pair(colors.at(col1_position).at(i), colors.at(col2_position).at(j));
+                            color_pair_list.push_back(pair);
+                        }
+                    }
                 }
             }
         } else {
@@ -164,7 +195,7 @@ bool Main::inDiagonalRange(ColorLocation col1, ColorLocation col2) {
 std::vector<Robot> Main::setupRobots() {
     std::vector<Robot> robots;
     Robot robot1(ROBOT_1_NAME, ROBOT_1_IP);
-    robot1.setColors(ROBOT_1_TOP_LEFT, ROBOT_1_TOP_RIGHT, ROBOT_1_BOTTOM_LEFT, ROBOT_1_BOTTOM_RIGHT);
+    robot1.setColors(ROBOT_1_CENTER, ROBOT_1_TOP_LEFT, ROBOT_1_TOP_RIGHT, ROBOT_1_BOTTOM_LEFT, ROBOT_1_BOTTOM_RIGHT);
 
     robots.push_back(robot1);
     return robots;

@@ -102,6 +102,7 @@ public:
         cv::dilate( autoThreshContour, autoThreshContour, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(4, 4)) );
         cv::erode(autoThreshContour, autoThreshContour, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3)) );
 
+
         std::vector< std::vector<Point> > contours;
         std::vector<Vec4i> hierarchy;
 

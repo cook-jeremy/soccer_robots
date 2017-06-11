@@ -139,17 +139,9 @@ add_executable(sendCommand3 src/SendCommand3.cpp)
 add_dependencies(sendCommand3 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(sendCommand3 ${catkin_LIBRARIES} )
 
-add_executable(robot_main src/RobotMain.cpp)
-add_dependencies(robot_main ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(robot_main ${catkin_LIBRARIES} )
-
 add_executable(teleop src/Teleop.cpp)
 add_dependencies(teleop ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(teleop ${catkin_LIBRARIES} )
-
-add_executable(image_handler src/ImageHandler.cpp)
-add_dependencies(image_handler ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(image_handler ${catkin_LIBRARIES} )
 
 add_executable(color_config src/ColorConfig.cpp include/ColorPair.h)
 add_dependencies(color_config ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

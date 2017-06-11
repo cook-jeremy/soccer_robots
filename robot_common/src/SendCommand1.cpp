@@ -5,7 +5,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <robot_common/Motor.h>
-#include <RobotNames.h>
+#include <Config.h>
 
 using namespace std;
 
@@ -91,7 +91,7 @@ void sendMsg(robot_common::Motor incoming) {
 
 
     sockaddr_storage addrDest = {};
-    result = resolvehelper(ROBOT_1_IP.c_str(), AF_INET, "2390", &addrDest);
+    result = resolvehelper(ROBOT_1_IP, AF_INET, "2390", &addrDest);
     if (result != 0)
     {
         int lasterror = errno;

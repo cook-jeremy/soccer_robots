@@ -7,24 +7,17 @@
 #include <actionlib/client/simple_action_client.h>
 #include <tf/transform_listener.h>
 #include <ImageHandler.h>
-#include "Robot.h"
+#include <Robot.h>
+#include <ColorLocation.h>
 
 static const std::string OPENCV_WINDOW = "Image window";
 static const std::string OUT_WINDOW = "Output window";
-
-int iLowH = 0;
-int iHighH = 179;
-int iLowS = 0;
-int iHighS = 255;
-int iLowV = 0;
-int iHighV = 255;
 
 double const PI = 3.141592653;
 
 ImageHandler::ImageHandler(ros::NodeHandle n, image_transport::ImageTransport it_) {
     // Subscrive to input video feed and publish output video feed
     image_sub_ = it_.subscribe("/usb_cam/image_raw", 1, &ImageHandler::imageCb, this);
-    //image_pub_ = it_.advertise("/image_converter/output_video", 1);
 
     //cv::namedWindow("Auto-Thresholded Image", CV_WINDOW_NORMAL);
     //cv::resizeWindow("Auto-Thresholded Image", 800, 600);
@@ -102,10 +95,12 @@ void ImageHandler::imageCb(const sensor_msgs::ImageConstPtr &msg) {
     cv::Mat red_img;
     cv::Mat blue_img;
     cv::Mat yellow_img;
+    cv::Mat orange_img;
     std::vector<std::string> color_names;
     color_names.push_back("red");
     color_names.push_back("blue");
     color_names.push_back("yellow");
+    color_names.push_back("orange");
 
     inRange(imgHSV, cv::Scalar(RED_MIN_HUE, RED_MIN_SAT, RED_MIN_VAL), cv::Scalar(RED_MAX_HUE, RED_MAX_SAT, RED_MAX_VAL), red_img);
     cv::erode(red_img, red_img, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3)) );
@@ -125,9 +120,16 @@ void ImageHandler::imageCb(const sensor_msgs::ImageConstPtr &msg) {
     cv::dilate(yellow_img, yellow_img, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(4, 4)) );
     cv::erode(yellow_img, yellow_img, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3)) );
 
+    inRange(imgHSV, cv::Scalar(ORANGE_MIN_HUE, ORANGE_MIN_SAT, ORANGE_MIN_VAL), cv::Scalar(ORANGE_MAX_HUE, ORANGE_MAX_SAT, ORANGE_MAX_VAL), orange_img);
+    cv::erode(orange_img, orange_img, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3)) );
+    cv::dilate(orange_img, orange_img, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(4, 4)) );
+    cv::dilate(orange_img, orange_img, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(4, 4)) );
+    cv::erode(orange_img, orange_img, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3)) );
+
     colors.push_back(red_img);
     colors.push_back(blue_img);
     colors.push_back(yellow_img);
+    colors.push_back(orange_img);
 
     //std::vector< std::vector<ColorLocation> > all_colors;
 
@@ -135,8 +137,7 @@ void ImageHandler::imageCb(const sensor_msgs::ImageConstPtr &msg) {
         all_colors.push_back(getColorAndPosition(original_image, colors.at(a), color_names.at(a)));
     }
 
-
-
+    cv::imshow("Auto-Thresholded Image", orange_img);
     //pause for 3 ms
     //cv::waitKey(1);
 
