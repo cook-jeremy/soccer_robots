@@ -17,6 +17,7 @@ public:
     bool inDiagonalRange(ColorLocation, ColorLocation);
     void findCorrectDiagonals(Robot *robot, std::vector< std::vector<ColorLocation> >, std::vector<ColorPair>, std::vector<ColorPair>);
     bool isColorsEmpty(std::vector< std::vector<ColorLocation> >);
+    void setColorLocations(Robot *robot, std::vector<ColorPair>, std::vector<ColorPair>);
 };
 
 Main::Main(ros::NodeHandle n) {
@@ -124,12 +125,22 @@ void Main::findCorrectDiagonals(Robot *robot, std::vector< std::vector<ColorLoca
                 robot->found(true);
                 robot->setX(robot_center_x);
                 robot->setY(robot_center_y);
+
+                setColorLocations(robot, pair1, pair2);
+
                 return;
             }
         }
     }
     robot->found(false);
 }
+
+void Main::setColorLocations(Robot *robot, std::vector<ColorPair> pair1, std::vector<ColorPair> pair2) {
+    for(int i = 0; i < 4; i++) {
+        
+    }
+}
+
 
 
 std::vector<ColorPair> Main::findDiagonal(std::vector< std::vector<ColorLocation> > colors, std::string col1, std::string col2) {

@@ -16,6 +16,7 @@
 #define ROBOT_2_TOP_RIGHT ""
 #define ROBOT_2_BOTTOM_LEFT ""
 #define ROBOT_2_BOTTOM_RIGHT ""
+#define ROBOT_3_CENTER ""
 
 #define ROBOT_3_NAME ""
 #define ROBOT_3_IP "192.168.1.203"
@@ -23,6 +24,7 @@
 #define ROBOT_3_TOP_RIGHT ""
 #define ROBOT_3_BOTTOM_LEFT ""
 #define ROBOT_3_BOTTOM_RIGHT ""
+#define ROBOT_3_CENTER ""
 
 #define NUM_COLORS 4
 

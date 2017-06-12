@@ -23,9 +23,15 @@ ImageHandler::ImageHandler(ros::NodeHandle n, image_transport::ImageTransport it
     //cv::resizeWindow("Auto-Thresholded Image", 800, 600);
     //cv::moveWindow("Auto-Thresholded Image", 300, 300);
 
-    cv::namedWindow("Original", CV_WINDOW_NORMAL);
+    cv::namedWindow("Original", CV_WINDOW_NORMAL | CV_GUI_NORMAL);
     cv::resizeWindow("Original", 800, 600);
     cv::moveWindow("Original", 300, 300);
+    cvCreateButton("button1", ImageHandler::callbackButton, NULL, CV_PUSH_BUTTON, 0);
+}
+
+
+void ImageHandler::callbackButton(int state, void* userdata) {
+    std::cout << "@my_button_cb" << std::endl;
 }
 
 ImageHandler::~ImageHandler() {
@@ -137,7 +143,7 @@ void ImageHandler::imageCb(const sensor_msgs::ImageConstPtr &msg) {
         all_colors.push_back(getColorAndPosition(original_image, colors.at(a), color_names.at(a)));
     }
 
-    cv::imshow("Auto-Thresholded Image", orange_img);
+    //cv::imshow("Auto-Thresholded Image", orange_img);
     //pause for 3 ms
     //cv::waitKey(1);
 

@@ -6,6 +6,7 @@
 #define PROJECT_ROBOT_H
 
 #include <string>
+#include "ColorLocation.h"
 
 class Robot {
     std::string name;
@@ -19,6 +20,10 @@ class Robot {
     float center_x;
     float center_y;
     float angle;
+    ColorLocation topLeft();
+    ColorLocation topRight();
+    ColorLocation bottomLeft();
+    ColorLocation bottomRight();
 public:
     Robot(std::string _name, std::string _ip) : name(_name), ip(_ip) {located = false;}
     std::string getIP();

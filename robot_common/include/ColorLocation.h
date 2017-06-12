@@ -11,10 +11,15 @@ class ColorLocation
     float x;
     float y;
 public:
+    ColorLocation();
     ColorLocation(std::string col, float x, float y);
     std::string getColor();
     float getX();
     float getY();
+    void setX(float);
+    void setY(float);
+    void setColor(std::string);
+
 };
 
 #endif // __MYCLASS_H_INCLUDED__

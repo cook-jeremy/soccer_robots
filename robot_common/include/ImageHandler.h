@@ -36,6 +36,7 @@ public:
     void drawCenter(cv_bridge::CvImagePtr, Robot);
     cv_bridge::CvImagePtr getImage();
     void updateImage();
+    void callbackButton(int state, void* userdata);
 };
 
 #endif //PROJECT_IMAGEHANDLER_H

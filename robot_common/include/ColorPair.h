@@ -17,6 +17,7 @@ public:
     ColorPair(ColorLocation, ColorLocation);
     float getCenterX();
     float getCenterY();
+
 };
 
 #endif //PROJECT_COLORPAIR_H

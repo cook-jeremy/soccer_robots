@@ -16,3 +16,8 @@ float ColorPair::getCenterX() {
 float ColorPair::getCenterY() {
     return center_y;
 }
+
+/**
+std::string ColorPair::getColor1() {
+    return col1;
+}**/

@@ -5,6 +5,7 @@
 #include <ColorLocation.h>
 //using namespace std;
 
+ColorLocation::ColorLocation() {}
 ColorLocation::ColorLocation(std::string col, float x1, float y1) {
     color = col;
     x = x1;
@@ -21,4 +22,16 @@ float ColorLocation::getX() {
 
 float ColorLocation::getY() {
     return y;
+}
+
+void ColorLocation::setX(float in_x) {
+    x = in_x;
+}
+
+void ColorLocation::setY(float in_y) {
+    y = in_y;
+}
+
+void ColorLocation::setColor(std::string in) {
+    color = in;
 }
