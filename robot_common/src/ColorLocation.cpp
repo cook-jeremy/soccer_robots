@@ -35,3 +35,11 @@ void ColorLocation::setY(float in_y) {
 void ColorLocation::setColor(std::string in) {
     color = in;
 }
+
+int ColorLocation::getID() {
+    return id;
+}
+
+void ColorLocation::setID(int id_) {
+    id = id_;
+}

@@ -26,7 +26,7 @@ ImageHandler::ImageHandler(ros::NodeHandle n, image_transport::ImageTransport it
     cv::namedWindow("Original", CV_WINDOW_NORMAL | CV_GUI_NORMAL);
     cv::resizeWindow("Original", 800, 600);
     cv::moveWindow("Original", 300, 300);
-    cvCreateButton("button1", ImageHandler::callbackButton, NULL, CV_PUSH_BUTTON, 0);
+    //cvCreateButton("button1", ImageHandler::callbackButton, NULL, CV_PUSH_BUTTON, 0);
 }
 
 

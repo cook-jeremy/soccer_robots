@@ -17,7 +17,10 @@ public:
     ColorPair(ColorLocation, ColorLocation);
     float getCenterX();
     float getCenterY();
-
+    std::string getColor1();
+    std::string getColor2();
+    ColorLocation getColorLocation1();
+    ColorLocation getColorLocation2();
 };
 
 #endif //PROJECT_COLORPAIR_H

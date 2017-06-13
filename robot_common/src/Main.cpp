@@ -17,7 +17,9 @@ public:
     bool inDiagonalRange(ColorLocation, ColorLocation);
     void findCorrectDiagonals(Robot *robot, std::vector< std::vector<ColorLocation> >, std::vector<ColorPair>, std::vector<ColorPair>);
     bool isColorsEmpty(std::vector< std::vector<ColorLocation> >);
-    void setColorLocations(Robot *robot, std::vector<ColorPair>, std::vector<ColorPair>);
+    void getAngle(Robot *robot, ColorPair, ColorPair);
+    float getDotAngle(Robot *robot, ColorLocation);
+    std::vector<ColorPair> findPairs(std::string, std::string, std::vector<ColorLocation>);
 };
 
 Main::Main(ros::NodeHandle n) {
@@ -98,11 +100,11 @@ void Main::findCorrectDiagonals(Robot *robot, std::vector< std::vector<ColorLoca
             float robot_center_y = pair1.at(i).getCenterY() - ((pair1.at(i).getCenterY() - pair2.at(j).getCenterY()) / 2);
 
             int color_position = -1;
-            for(int i = 0; i < colors.size(); i++) {
-                if(colors.at(i).size() != 0) {
-                    std::string currentColor = colors.at(i).at(0).getColor();
+            for(int k = 0; k < colors.size(); k++) {
+                if(colors.at(k).size() != 0) {
+                    std::string currentColor = colors.at(k).at(0).getColor();
                     if (currentColor == robot->getCenterColor()) {
-                        color_position = i;
+                        color_position = k;
                         continue;
                     }
                 }
@@ -126,7 +128,7 @@ void Main::findCorrectDiagonals(Robot *robot, std::vector< std::vector<ColorLoca
                 robot->setX(robot_center_x);
                 robot->setY(robot_center_y);
 
-                setColorLocations(robot, pair1, pair2);
+                getAngle(robot, pair1.at(i), pair2.at(i));
 
                 return;
             }
@@ -135,13 +137,34 @@ void Main::findCorrectDiagonals(Robot *robot, std::vector< std::vector<ColorLoca
     robot->found(false);
 }
 
-void Main::setColorLocations(Robot *robot, std::vector<ColorPair> pair1, std::vector<ColorPair> pair2) {
-    for(int i = 0; i < 4; i++) {
-        
-    }
+void Main::getAngle(Robot *robot, ColorPair pair1, ColorPair pair2) {
+    std::vector<ColorLocation> four_colors;
+    pair1.getColorLocation1().setID(1);
+    pair1.getColorLocation2().setID(2);
+    pair2.getColorLocation1().setID(3);
+    pair2.getColorLocation2().setID(4);
+    four_colors.push_back(pair1.getColorLocation1());
+    four_colors.push_back(pair1.getColorLocation2());
+    four_colors.push_back(pair2.getColorLocation1());
+    four_colors.push_back(pair2.getColorLocation2());
+
+    //front_pair;
+    findPairs(robot->getTopLeftColor(), robot->getTopRightColor(), four_colors);
+    //back_pair;
+    //left_pair;
+    //right_pair;
 }
 
+std::vector<ColorPair> Main::findPairs(std::string col1, std::string col2, std::vector<ColorLocation> four_colors) {
 
+}
+
+float Main::getDotAngle(Robot *robot, ColorLocation potential) {
+    float y = potential.getY() - robot->getY();
+    float x = potential.getX() - robot->getX();
+    float angle = std::tan(y/x);
+    return angle;
+}
 
 std::vector<ColorPair> Main::findDiagonal(std::vector< std::vector<ColorLocation> > colors, std::string col1, std::string col2) {
     int col1_position = -1;
