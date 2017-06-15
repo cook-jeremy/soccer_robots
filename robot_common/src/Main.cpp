@@ -3,22 +3,24 @@
 #include "Config.h"
 #include "ColorPair.h"
 #include "ImageHandler.h"
-#include "Robot.h"
+#include "TaskTurnToTop.h"
+//#include "Robot.h"
 
 using namespace std;
 
 class Main {
     bool first;
+    bool turnToTop;
 public:
     Main(ros::NodeHandle);
     std::vector<Robot> setupRobots();
     void findRobotPositions(std::vector<Robot> *robot_p, std::vector< std::vector<ColorLocation> >);
     std::vector<ColorPair> findDiagonal(std::vector< std::vector<ColorLocation> >, std::string, std::string);
     bool inDiagonalRange(ColorLocation, ColorLocation);
-    void findCorrectDiagonals(Robot *robot, std::vector< std::vector<ColorLocation> >, std::vector<ColorPair>, std::vector<ColorPair>);
+    void findCorrectDiagonals(Robot*, std::vector< std::vector<ColorLocation> >, std::vector<ColorPair>, std::vector<ColorPair>);
     bool isColorsEmpty(std::vector< std::vector<ColorLocation> >);
-    void getAngle(Robot *robot, ColorPair, ColorPair);
-    float getDotAngle(Robot *robot, ColorLocation);
+    void getAngle(Robot*, ColorPair, ColorPair);
+    float getDotAngle(Robot*, ColorLocation);
     float calculateRobotAngle(Robot*, ColorLocation, ColorLocation);
 };
 
@@ -28,7 +30,9 @@ Main::Main(ros::NodeHandle n) {
 
     std::vector<Robot> robots = setupRobots();
     std::vector<Robot> * robot_p = &robots;
-    first = false;
+    first = true;
+
+    TaskTurnToTop turn(n);
 
     cout << "Starting Main" << endl;
     while (ros::ok())
@@ -36,9 +40,8 @@ Main::Main(ros::NodeHandle n) {
         // Get all colors from the image
         std::vector< std::vector<ColorLocation> > colors = ih.getAllColors();
         cv_bridge::CvImagePtr img = ih.getImage();
-
         //cout << "all_colors" << colors.size() << endl;
-        if(colors.size() != 0) {
+        if(colors.size() != 0 && !first) {
             bool isEmpty = isColorsEmpty(colors);
             if(!isEmpty) {
                 //cout << "x = " << colors.at(1).at(1).getX() << endl;
@@ -47,6 +50,7 @@ Main::Main(ros::NodeHandle n) {
                     if (robots.at(i).isLocated()) {
                         ih.drawCenter(img, robots.at(i));
                         ih.drawDirection(img, robots.at(i));
+                        turn.action(robots.at(i), 0);
                     }
                 }
             }
@@ -55,6 +59,7 @@ Main::Main(ros::NodeHandle n) {
         if(img) {
             cv::imshow("Original", img->image);
         }
+        first = false;
         cv::waitKey(1);
         ros::spinOnce();
     }

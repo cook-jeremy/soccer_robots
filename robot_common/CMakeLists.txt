@@ -147,7 +147,7 @@ add_executable(color_config src/ColorConfig.cpp include/ColorPair.h)
 add_dependencies(color_config ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(color_config ${catkin_LIBRARIES} )
 
-add_executable(main src/Main.cpp src/ImageHandler.cpp src/ColorLocation.cpp src/Robot.cpp include/Robot.h src/ColorPair.cpp)
+add_executable(main src/Main.cpp src/ImageHandler.cpp src/ColorLocation.cpp src/Robot.cpp include/Robot.h src/ColorPair.cpp src/TaskTurnToTop.cpp src/TaskTurnToTop.h)
 add_dependencies(main ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(main ${catkin_LIBRARIES} )
 
