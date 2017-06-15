@@ -20,10 +20,6 @@ class Robot {
     float center_x;
     float center_y;
     float angle;
-    ColorLocation topLeft();
-    ColorLocation topRight();
-    ColorLocation bottomLeft();
-    ColorLocation bottomRight();
 public:
     Robot(std::string _name, std::string _ip) : name(_name), ip(_ip) {located = false;}
     std::string getIP();
@@ -39,6 +35,9 @@ public:
     std::string getBottomLeftColor();
     std::string getBottomRightColor();
     std::string getCenterColor();
+    void setAngle(float);
+    float getAngle();
+    float getRadian();
 };
 
 

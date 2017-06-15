@@ -19,7 +19,7 @@ public:
     bool isColorsEmpty(std::vector< std::vector<ColorLocation> >);
     void getAngle(Robot *robot, ColorPair, ColorPair);
     float getDotAngle(Robot *robot, ColorLocation);
-    std::vector<ColorPair> findPairs(std::string, std::string, std::vector<ColorLocation>);
+    float calculateRobotAngle(Robot*, ColorLocation, ColorLocation);
 };
 
 Main::Main(ros::NodeHandle n) {
@@ -46,6 +46,7 @@ Main::Main(ros::NodeHandle n) {
                 for (int i = 0; i < robots.size(); i++) {
                     if (robots.at(i).isLocated()) {
                         ih.drawCenter(img, robots.at(i));
+                        ih.drawDirection(img, robots.at(i));
                     }
                 }
             }
@@ -77,13 +78,10 @@ bool Main::isColorsEmpty(std::vector< std::vector<ColorLocation> > colors) {
 void Main::findRobotPositions(std::vector<Robot> *robots, std::vector< std::vector<ColorLocation> > colors) {
     if(!robots->empty()) {
         for (int i = 0; i < robots->size(); i++) {
-
             // Find diagonal pair top left bottom right
-            std::vector<ColorPair> potential_pairs1 = findDiagonal(colors, robots->at(i).getTopLeftColor(),
-                                                                   robots->at(i).getBottomRightColor());
+            std::vector<ColorPair> potential_pairs1 = findDiagonal(colors, robots->at(i).getTopLeftColor(), robots->at(i).getBottomRightColor());
             // Find diagonal pair top right bottom left
-            std::vector<ColorPair> potential_pairs2 = findDiagonal(colors, robots->at(i).getTopRightColor(),
-                                                                   robots->at(i).getBottomLeftColor());
+            std::vector<ColorPair> potential_pairs2 = findDiagonal(colors, robots->at(i).getTopRightColor(), robots->at(i).getBottomLeftColor());
             // See which pair of diagonals has the same center point
             findCorrectDiagonals(&robots->at(i), colors, potential_pairs1, potential_pairs2);
         }
@@ -111,9 +109,9 @@ void Main::findCorrectDiagonals(Robot *robot, std::vector< std::vector<ColorLoca
             }
 
             bool color_at_center = false;
-            for(int j = 0; j < colors.at(color_position).size(); j++) {
-                float color_x = colors.at(color_position).at(j).getX();
-                float color_y = colors.at(color_position).at(j).getY();
+            for(int l = 0; l < colors.at(color_position).size(); l++) {
+                float color_x = colors.at(color_position).at(l).getX();
+                float color_y = colors.at(color_position).at(l).getY();
                 float diff_x = color_x - robot_center_x;
                 float diff_y = color_y - robot_center_y;
                 float pyth2 = std::sqrt(std::pow(diff_x, 2) + std::pow(diff_y, 2));
@@ -128,7 +126,7 @@ void Main::findCorrectDiagonals(Robot *robot, std::vector< std::vector<ColorLoca
                 robot->setX(robot_center_x);
                 robot->setY(robot_center_y);
 
-                getAngle(robot, pair1.at(i), pair2.at(i));
+                getAngle(robot, pair1.at(i), pair2.at(j));
 
                 return;
             }
@@ -139,30 +137,73 @@ void Main::findCorrectDiagonals(Robot *robot, std::vector< std::vector<ColorLoca
 
 void Main::getAngle(Robot *robot, ColorPair pair1, ColorPair pair2) {
     std::vector<ColorLocation> four_colors;
-    pair1.getColorLocation1().setID(1);
-    pair1.getColorLocation2().setID(2);
-    pair2.getColorLocation1().setID(3);
-    pair2.getColorLocation2().setID(4);
     four_colors.push_back(pair1.getColorLocation1());
     four_colors.push_back(pair1.getColorLocation2());
     four_colors.push_back(pair2.getColorLocation1());
     four_colors.push_back(pair2.getColorLocation2());
-
-    //front_pair;
-    findPairs(robot->getTopLeftColor(), robot->getTopRightColor(), four_colors);
-    //back_pair;
-    //left_pair;
-    //right_pair;
+    std::vector<float> anglesBefore;
+    std::vector<float> anglesAfter;
+    for(int i = 0; i < four_colors.size(); i++) {
+        float angle = getDotAngle(robot, four_colors.at(i));
+        anglesBefore.push_back(angle);
+        anglesAfter.push_back(angle);
+    }
+    std::sort(anglesAfter.begin(), anglesAfter.end());
+    std::vector<int> after;
+    for(int a = 0; a < 4; a++) {
+        for(int b = 0; b < 4; b++) {
+            if(anglesAfter.at(a) == anglesBefore.at(b)) {
+                after.push_back(b);
+            }
+        }
+    }
+    std::vector<ColorLocation> anticlockwise;
+    for(int c = 0; c < 4; c++) {
+        anticlockwise.push_back(four_colors.at(after.at(c)));
+    }
+    std::vector<int> mylist;
+    mylist.push_back(0);
+    mylist.push_back(1);
+    mylist.push_back(2);
+    mylist.push_back(3);
+    for(int d = 0; d < 4; d++) {
+        if(anticlockwise.at(mylist.at(0)).getColor() == robot->getTopLeftColor() &&
+                anticlockwise.at(mylist.at(1)).getColor() == robot->getBottomLeftColor() &&
+                anticlockwise.at(mylist.at(2)).getColor() == robot->getBottomRightColor() &&
+                anticlockwise.at(mylist.at(3)).getColor() == robot->getTopRightColor()) {
+            robot->setAngle(calculateRobotAngle(robot, anticlockwise.at(mylist.at(0)), anticlockwise.at(mylist.at(3))));
+        }
+        std::rotate(mylist.begin(), mylist.begin() + 1, mylist.end());
+    }
+    int test = 0;
 }
 
-std::vector<ColorPair> Main::findPairs(std::string col1, std::string col2, std::vector<ColorLocation> four_colors) {
-
+float Main::calculateRobotAngle(Robot *robot, ColorLocation tl, ColorLocation tr) {
+    float rx = robot->getX();
+    float ry = robot->getY();
+    float cx = tl.getX() - ((tl.getX() - tr.getX())/2);
+    float cy = tl.getY() - ((tl.getY() - tr.getY())/2);
+    float x = cx - rx;
+    float y = ry - cy;
+    float angle = std::atan(y/x);
+    if(x < 0 && y > 0 || x < 0 && y < 0) {
+        angle += 3.141592653;
+    } else if(x > 0 && y < 0) {
+        angle += 2 * 3.141592653;
+    }
+    angle *= (180/3.141592653);
+    return angle;
 }
 
 float Main::getDotAngle(Robot *robot, ColorLocation potential) {
-    float y = potential.getY() - robot->getY();
+    float y = robot->getY() - potential.getY();
     float x = potential.getX() - robot->getX();
-    float angle = std::tan(y/x);
+    float angle = std::atan(y/x);
+    if(x < 0 && y > 0 || x < 0 && y < 0) {
+        angle += 3.141592653;
+    } else if(x > 0 && y < 0) {
+        angle += 2 * 3.141592653;
+    }
     return angle;
 }
 

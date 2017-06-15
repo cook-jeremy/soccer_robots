@@ -41,7 +41,7 @@
 #include <sstream>
 #include <std_srvs/Empty.h>
 
-int exposure = 29;
+int exposure = 129;
 int white_balance = 2849;
 int contrast = 170;
 

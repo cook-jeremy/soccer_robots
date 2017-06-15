@@ -61,3 +61,15 @@ void Robot::setX(float x) {
 void Robot::setY(float y) {
     center_y = y;
 }
+
+void Robot::setAngle(float ang) {
+    angle = ang;
+}
+
+float Robot::getAngle() {
+    return angle;
+}
+
+float Robot::getRadian() {
+    return angle * (3.141592653 / 180);
+}

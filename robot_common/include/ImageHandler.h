@@ -34,6 +34,7 @@ public:
     void imageCb(const sensor_msgs::ImageConstPtr &msg);
     std::vector< std::vector<ColorLocation> > getAllColors();
     void drawCenter(cv_bridge::CvImagePtr, Robot);
+    void drawDirection(cv_bridge::CvImagePtr, Robot);
     cv_bridge::CvImagePtr getImage();
     void updateImage();
     void callbackButton(int state, void* userdata);
