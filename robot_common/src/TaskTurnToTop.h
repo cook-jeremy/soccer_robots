@@ -14,6 +14,7 @@ class TaskTurnToTop {
     double previousError;
     double integral;
     float previousTime;
+    double Ku;
 public:
     TaskTurnToTop(ros::NodeHandle);
     void action(Robot, double, float);
