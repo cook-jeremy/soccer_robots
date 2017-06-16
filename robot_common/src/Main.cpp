@@ -4,6 +4,8 @@
 #include "ColorPair.h"
 #include "ImageHandler.h"
 #include "TaskTurnToTop.h"
+#include <time.h>
+#include <sys/timeb.h>
 //#include "Robot.h"
 
 using namespace std;
@@ -22,21 +24,42 @@ public:
     void getAngle(Robot*, ColorPair, ColorPair);
     float getDotAngle(Robot*, ColorLocation);
     float calculateRobotAngle(Robot*, ColorLocation, ColorLocation);
+    int getMilliCount();
+    int getMilliSpan(int);
 };
 
 Main::Main(ros::NodeHandle n) {
     image_transport::ImageTransport it(n);
     ImageHandler ih(n, it);
 
+    //clock_t t;
+    //clock_t start = clock();
+    //clock_t delta;
+    //clock_t previousTime;
+    //t = clock() - start;
+    //previousTime = clock() - start;
+
+    int current = getMilliCount();
+    int milliSecondsElapsed;
+
     std::vector<Robot> robots = setupRobots();
     std::vector<Robot> * robot_p = &robots;
     first = true;
+    int firstCounter = 0;
 
     TaskTurnToTop turn(n);
+
 
     cout << "Starting Main" << endl;
     while (ros::ok())
     {
+        //delta = clock() - previousTime;
+        //previousTime = clock();
+
+        milliSecondsElapsed = getMilliSpan(current);
+        current = getMilliCount();
+
+        //cout << "System Time in milliseconds is " << milliSecondsElapsed << "." << endl;
         // Get all colors from the image
         std::vector< std::vector<ColorLocation> > colors = ih.getAllColors();
         cv_bridge::CvImagePtr img = ih.getImage();
@@ -50,7 +73,7 @@ Main::Main(ros::NodeHandle n) {
                     if (robots.at(i).isLocated()) {
                         ih.drawCenter(img, robots.at(i));
                         ih.drawDirection(img, robots.at(i));
-                        turn.action(robots.at(i), 0);
+                        turn.action(robots.at(i), 90, milliSecondsElapsed);
                     }
                 }
             }
@@ -59,10 +82,28 @@ Main::Main(ros::NodeHandle n) {
         if(img) {
             cv::imshow("Original", img->image);
         }
-        first = false;
+        if(firstCounter < 20) {
+            firstCounter++;
+        } else {
+            first = false;
+        }
         cv::waitKey(1);
         ros::spinOnce();
     }
+}
+
+int Main::getMilliCount() {
+    timeb tb;
+    ftime(&tb);
+    int nCount = tb.millitm + (tb.time & 0xfffff) * 1000;
+    return nCount;
+}
+
+int Main::getMilliSpan(int nTimeStart){
+    int nSpan = getMilliCount() - nTimeStart;
+    if(nSpan < 0)
+        nSpan += 0x100000 * 1000;
+    return nSpan;
 }
 
 bool Main::isColorsEmpty(std::vector< std::vector<ColorLocation> > colors) {

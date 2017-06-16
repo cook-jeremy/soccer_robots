@@ -11,9 +11,13 @@
 class TaskTurnToTop {
     ros::Publisher command_pub;
     std::string last_cmd;
+    double previousError;
+    double integral;
+    float previousTime;
 public:
     TaskTurnToTop(ros::NodeHandle);
-    void action(Robot, double);
+    void action(Robot, double, float);
+    double getPIDCorrection(double, double, double, int);
 };
 
 
