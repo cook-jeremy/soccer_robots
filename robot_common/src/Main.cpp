@@ -32,13 +32,6 @@ Main::Main(ros::NodeHandle n) {
     image_transport::ImageTransport it(n);
     ImageHandler ih(n, it);
 
-    //clock_t t;
-    //clock_t start = clock();
-    //clock_t delta;
-    //clock_t previousTime;
-    //t = clock() - start;
-    //previousTime = clock() - start;
-
     int current = getMilliCount();
     int milliSecondsElapsed;
 
@@ -48,18 +41,16 @@ Main::Main(ros::NodeHandle n) {
     int firstCounter = 0;
 
     TaskTurnToTop turn(n);
+    TaskGoToCoordinates goto_coor(n);
+    srand (time(NULL));
+    double v1 = rand() % 360;
+    cout << "Rand angle is: " << v1 << endl;
 
-
-    cout << "Starting Main" << endl;
+         cout << "Starting Main" << endl;
     while (ros::ok())
     {
-        //delta = clock() - previousTime;
-        //previousTime = clock();
-
         milliSecondsElapsed = getMilliSpan(current);
         current = getMilliCount();
-
-        //cout << "System Time in milliseconds is " << milliSecondsElapsed << "." << endl;
         // Get all colors from the image
         std::vector< std::vector<ColorLocation> > colors = ih.getAllColors();
         cv_bridge::CvImagePtr img = ih.getImage();
@@ -73,7 +64,7 @@ Main::Main(ros::NodeHandle n) {
                     if (robots.at(i).isLocated()) {
                         ih.drawCenter(img, robots.at(i));
                         ih.drawDirection(img, robots.at(i));
-                        turn.action(robots.at(i), 90, milliSecondsElapsed);
+                        turn.action(robots.at(i), v1, milliSecondsElapsed);
                     }
                 }
             }
@@ -317,8 +308,11 @@ std::vector<Robot> Main::setupRobots() {
     std::vector<Robot> robots;
     Robot robot1(ROBOT_1_NAME, ROBOT_1_IP);
     robot1.setColors(ROBOT_1_CENTER, ROBOT_1_TOP_LEFT, ROBOT_1_TOP_RIGHT, ROBOT_1_BOTTOM_LEFT, ROBOT_1_BOTTOM_RIGHT);
-
     robots.push_back(robot1);
+
+    Robot robot3(ROBOT_3_NAME, ROBOT_3_IP);
+    robot3.setColors(ROBOT_3_CENTER, ROBOT_3_TOP_LEFT, ROBOT_3_TOP_RIGHT, ROBOT_3_BOTTOM_LEFT, ROBOT_3_BOTTOM_RIGHT);
+    robots.push_back(robot3);
     return robots;
 }
 

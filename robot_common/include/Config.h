@@ -2,12 +2,12 @@
 #define __CONFIG_H_INCLUDED__
 
 
-#define ROBOT_1_NAME "Lisa"
+#define ROBOT_1_NAME "Pamela"
 #define ROBOT_1_IP "192.168.1.201"
 #define ROBOT_1_TOP_LEFT "blue"
-#define ROBOT_1_TOP_RIGHT "yellow"
-#define ROBOT_1_BOTTOM_LEFT "red"
-#define ROBOT_1_BOTTOM_RIGHT "blue"
+#define ROBOT_1_TOP_RIGHT "red"
+#define ROBOT_1_BOTTOM_LEFT "yellow"
+#define ROBOT_1_BOTTOM_RIGHT "red"
 #define ROBOT_1_CENTER "orange"
 
 #define ROBOT_2_NAME ""
@@ -18,13 +18,13 @@
 #define ROBOT_2_BOTTOM_RIGHT ""
 #define ROBOT_3_CENTER ""
 
-#define ROBOT_3_NAME ""
+#define ROBOT_3_NAME "Lisa"
 #define ROBOT_3_IP "192.168.1.203"
-#define ROBOT_3_TOP_LEFT ""
-#define ROBOT_3_TOP_RIGHT ""
-#define ROBOT_3_BOTTOM_LEFT ""
-#define ROBOT_3_BOTTOM_RIGHT ""
-#define ROBOT_3_CENTER ""
+#define ROBOT_3_TOP_LEFT "blue"
+#define ROBOT_3_TOP_RIGHT "yellow"
+#define ROBOT_3_BOTTOM_LEFT "red"
+#define ROBOT_3_BOTTOM_RIGHT "blue"
+#define ROBOT_3_CENTER "orange"
 
 #define NUM_COLORS 4
 
