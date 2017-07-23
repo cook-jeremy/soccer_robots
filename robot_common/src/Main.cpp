@@ -13,6 +13,7 @@ using namespace std;
 class Main {
     bool first;
     bool turnToTop;
+    bool stop_command;
 public:
     Main(ros::NodeHandle);
     std::vector<Robot> setupRobots();
@@ -26,6 +27,7 @@ public:
     float calculateRobotAngle(Robot*, ColorLocation, ColorLocation);
     int getMilliCount();
     int getMilliSpan(int);
+    void guiCommandChecker();
 };
 
 Main::Main(ros::NodeHandle n) {
@@ -41,12 +43,11 @@ Main::Main(ros::NodeHandle n) {
     int firstCounter = 0;
 
     TaskTurnToTop turn(n);
-    TaskGoToCoordinates goto_coor(n);
+    //TaskGoToCoordinates goto_coor(n);
     srand (time(NULL));
     double v1 = rand() % 360;
     cout << "Rand angle is: " << v1 << endl;
-
-         cout << "Starting Main" << endl;
+    cout << "Starting Main" << endl;
     while (ros::ok())
     {
         milliSecondsElapsed = getMilliSpan(current);
@@ -64,7 +65,8 @@ Main::Main(ros::NodeHandle n) {
                     if (robots.at(i).isLocated()) {
                         ih.drawCenter(img, robots.at(i));
                         ih.drawDirection(img, robots.at(i));
-                        turn.action(robots.at(i), v1, milliSecondsElapsed);
+                        //turn.action(robots.at(i), v1, milliSecondsElapsed);
+                        guiCommandChecker();
                     }
                 }
             }
@@ -80,6 +82,12 @@ Main::Main(ros::NodeHandle n) {
         }
         cv::waitKey(1);
         ros::spinOnce();
+    }
+}
+
+void Main::guiCommandChecker() {
+    if(stop_command == true) {
+        //stop
     }
 }
 

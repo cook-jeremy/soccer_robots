@@ -11,27 +11,44 @@ class Control():
         self.ros_init()
 
     def ros_init(self):
-        self.pub = rospy.Publisher('chatter', String, queue_size=10)
+        self.pub = rospy.Publisher('gui_commands', String, queue_size=10)
         rospy.init_node('control_gui', anonymous=True)
         self.rate = rospy.Rate(10)  # 10hz
 
     def gui_init(self):
         self.root = Tkinter.Tk()
-        Tkinter.Button(self.root, text="Hello", command=self.helloCallBack).grid(row=0, column=0)
-        Tkinter.Button(self.root, text="Hello", command=self.helloCallBack).grid(row=1, column=0)
-        Tkinter.Button(self.root, text="Hello", command=self.helloCallBack).grid(row=2, column=0)
-        Tkinter.Button(self.root, text="Hello", command=self.helloCallBack).grid(row=3, column=0)
 
-        Tkinter.Button(self.root, text="Hello", command=self.helloCallBack).grid(row=0, column=1)
-        Tkinter.Button(self.root, text="Hello", command=self.helloCallBack).grid(row=1, column=1)
-        Tkinter.Button(self.root, text="Hello", command=self.helloCallBack).grid(row=2, column=1)
-        Tkinter.Button(self.root, text="Hello", command=self.helloCallBack).grid(row=3, column=1)
+        run = Tkinter.Button(self.root, text="Run", command=self.runCallBack, height=5, width=10)
+        run.grid(row=0, column=0, padx=10, pady=10)
 
-    def helloCallBack(self):
-       #tkMessageBox.showinfo( "Hello Python", "Hello World")
-       hello_str = "hello world %s" % rospy.get_time()
-       rospy.loginfo(hello_str)
-       self.pub.publish(hello_str)
+        stop = Tkinter.Button(self.root, text="Stop", command=self.stopCallBack, height=5, width=10)
+        stop.grid(row=0, column=1, padx=10, pady=10)
+
+        turn = Tkinter.Button(self.root, text="Turn North", command=self.turnNorthCallBack, height=5, width=10)
+        turn.grid(row=0, column=2, padx=10, pady=10)
+
+        turn = Tkinter.Button(self.root, text="Turn South", command=self.turnSouthCallBack, height=5, width=10)
+        turn.grid(row=0, column=3, padx=10, pady=10)
+
+    def stopCallBack(self):
+        cmd = "stop"
+        rospy.loginfo(cmd)
+        self.pub.publish(cmd)
+
+    def runCallBack(self):
+        cmd = "run"
+        rospy.loginfo(cmd)
+        self.pub.publish(cmd)
+
+    def turnNorthCallBack(self):
+        cmd = "turn_0"
+        rospy.loginfo(cmd)
+        self.pub.publish(cmd)
+
+    def turnSouthCallBack(self):
+        cmd = "turn_180"
+        rospy.loginfo(cmd)
+        self.pub.publish(cmd)
 
     def main(self):
         while not rospy.is_shutdown():
